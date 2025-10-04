@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Flame, Droplet, Home, Sprout, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface MissionCardProps {
   title: string;
@@ -21,6 +22,13 @@ const iconMap = {
   greenhouse: Sprout,
 };
 
+const pathMap = {
+  habitat: "/build-habitat",
+  water: "/water-extraction",
+  energy: "/solar-farm",
+  greenhouse: "/greenhouse",
+};
+
 const difficultyColors = {
   Beginner: "bg-green-500/20 text-green-400 border-green-500/30",
   Intermediate: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
@@ -37,9 +45,11 @@ export const MissionCard = ({
   dataUsed 
 }: MissionCardProps) => {
   const Icon = iconMap[icon];
+  const path = pathMap[icon];
   
   return (
-    <Card className="glass-card p-6 hover:scale-105 transition-all duration-300 group cursor-pointer">
+    <Link to={path}>
+      <Card className="glass-card p-6 hover:scale-105 transition-all duration-300 group cursor-pointer">
       <div className="flex items-start justify-between mb-4">
         <div className="p-3 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
           <Icon className="h-6 w-6 text-primary" />
@@ -85,5 +95,6 @@ export const MissionCard = ({
         </Button>
       </div>
     </Card>
+    </Link>
   );
 };

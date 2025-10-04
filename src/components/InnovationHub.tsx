@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ThumbsUp, MessageCircle, Star, Lightbulb } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const innovations = [
   {
@@ -105,9 +106,11 @@ export const InnovationHub = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Button size="lg" variant="outline" className="border-2 border-accent/50 hover:bg-accent/10">
-            Explore All Solutions
-          </Button>
+          <Link to="/innovation-hub">
+            <Button size="lg" variant="outline" className="border-2 border-accent/50 hover:bg-accent/10">
+              Explore All Solutions
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

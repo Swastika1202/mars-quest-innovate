@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Rocket, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const CTASection = () => {
   return (
@@ -25,10 +26,12 @@ export const CTASection = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="gradient-mars text-white font-semibold px-8 py-6 text-lg hover:opacity-90 transition-opacity">
-                Start Your First Mission
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              <Link to="/start-mission">
+                <Button size="lg" className="gradient-mars text-white font-semibold px-8 py-6 text-lg hover:opacity-90 transition-opacity">
+                  Start Your First Mission
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
               <Button size="lg" variant="outline" className="border-2 border-primary/50 hover:bg-primary/10 px-8 py-6 text-lg">
                 Watch Demo
               </Button>

@@ -1,6 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Trophy, Medal, Award, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
 import badgeMars from "@/assets/badge-mars.png";
 
 const achievements = [
@@ -60,9 +62,12 @@ export const GamificationPanel = () => {
               <h2 className="text-4xl font-bold mb-4">
                 Earn <span className="text-gradient-achievement">Achievements</span>
               </h2>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground mb-4">
                 Unlock badges and rewards as you complete missions and contribute solutions
               </p>
+              <Link to="/achievements">
+                <Button variant="outline" size="sm">View All Achievements</Button>
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -98,9 +103,12 @@ export const GamificationPanel = () => {
               <h2 className="text-4xl font-bold mb-4">
                 <span className="text-gradient-mars">Leaderboard</span>
               </h2>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground mb-4">
                 Compete with students worldwide and climb the ranks
               </p>
+              <Link to="/leaderboard">
+                <Button variant="outline" size="sm">View Full Leaderboard</Button>
+              </Link>
             </div>
 
             <Card className="glass-card p-6">
