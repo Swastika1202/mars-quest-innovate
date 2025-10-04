@@ -105,7 +105,7 @@ const SolarFarm = () => {
         </section>
 
         <section className="text-center">
-          <Button size="lg" className="gradient-mars text-white font-semibold px-8">
+          <Button size="lg" className="gradient-mars text-white font-semibold px-8 hover:!bg-[unset] hover:!text-white">
             Start Mission
           </Button>
         </section>

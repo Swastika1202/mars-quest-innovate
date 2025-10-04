@@ -5,9 +5,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, Lightbulb, ThumbsUp, MessageCircle, Star, Search, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
+import React, { useState } from "react";
 
 const innovations = [
   {
+    id: "ih1",
     title: "3D-Printed Habitat from Regolith",
     author: "Sarah Chen",
     school: "MIT",
@@ -18,6 +20,7 @@ const innovations = [
     featured: true,
   },
   {
+    id: "ih2",
     title: "Bio-Dome Air Recycling System",
     author: "Alex Kumar",
     school: "Stanford",
@@ -28,6 +31,7 @@ const innovations = [
     featured: false,
   },
   {
+    id: "ih3",
     title: "Underground Ice Mining Robot",
     author: "Maya Rodriguez",
     school: "Caltech",
@@ -38,6 +42,7 @@ const innovations = [
     featured: false,
   },
   {
+    id: "ih4",
     title: "Modular Greenhouse System",
     author: "James Park",
     school: "UC Berkeley",
@@ -48,6 +53,7 @@ const innovations = [
     featured: false,
   },
   {
+    id: "ih5",
     title: "Solar Panel Dust Cleaner",
     author: "Zara Ahmed",
     school: "Georgia Tech",
@@ -58,6 +64,7 @@ const innovations = [
     featured: false,
   },
   {
+    id: "ih6",
     title: "Mars Brick Manufacturing",
     author: "Oliver Zhang",
     school: "ETH Zurich",
@@ -70,6 +77,18 @@ const innovations = [
 ];
 
 const InnovationHubPage = () => {
+  const [activeCategory, setActiveCategory] = useState("All Categories");
+
+  const filteredInnovations = (() => {
+    if (activeCategory === "All Categories") {
+      return innovations;
+    } else if (activeCategory === "Trending") {
+      return innovations.filter(innovation => innovation.featured);
+    } else {
+      return innovations.filter(innovation => innovation.category === activeCategory);
+    }
+  })();
+
   return (
     <div className="min-h-screen">
       <header className="border-b border-border/50 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
@@ -107,11 +126,59 @@ const InnovationHubPage = () => {
           </div>
 
           <div className="flex gap-3 justify-center flex-wrap">
-            <Badge className="cursor-pointer hover:bg-primary/20 transition-colors">All Categories</Badge>
-            <Badge variant="outline" className="cursor-pointer hover:bg-primary/10 transition-colors">Habitat</Badge>
-            <Badge variant="outline" className="cursor-pointer hover:bg-primary/10 transition-colors">Water</Badge>
-            <Badge variant="outline" className="cursor-pointer hover:bg-primary/10 transition-colors">Energy</Badge>
-            <Badge variant="outline" className="cursor-pointer hover:bg-primary/10 transition-colors">Agriculture</Badge>
+            <Badge
+              className={`cursor-pointer transition-colors ${
+                activeCategory === "All Categories" ? "bg-primary/20 text-primary" : "hover:bg-primary/20"
+              }`}
+              onClick={() => setActiveCategory("All Categories")}
+            >
+              All Categories
+            </Badge>
+            <Badge
+              variant="outline"
+              className={`cursor-pointer transition-colors ${
+                activeCategory === "Trending" ? "bg-primary/20 text-primary" : "hover:bg-primary/10"
+              }`}
+              onClick={() => setActiveCategory("Trending")}
+            >
+              Trending
+            </Badge>
+            <Badge
+              variant="outline"
+              className={`cursor-pointer transition-colors ${
+                activeCategory === "Habitat" ? "bg-primary/20 text-primary" : "hover:bg-primary/10"
+              }`}
+              onClick={() => setActiveCategory("Habitat")}
+            >
+              Habitat
+            </Badge>
+            <Badge
+              variant="outline"
+              className={`cursor-pointer transition-colors ${
+                activeCategory === "Water" ? "bg-primary/20 text-primary" : "hover:bg-primary/10"
+              }`}
+              onClick={() => setActiveCategory("Water")}
+            >
+              Water
+            </Badge>
+            <Badge
+              variant="outline"
+              className={`cursor-pointer transition-colors ${
+                activeCategory === "Energy" ? "bg-primary/20 text-primary" : "hover:bg-primary/10"
+              }`}
+              onClick={() => setActiveCategory("Energy")}
+            >
+              Energy
+            </Badge>
+            <Badge
+              variant="outline"
+              className={`cursor-pointer transition-colors ${
+                activeCategory === "Agriculture" ? "bg-primary/20 text-primary" : "hover:bg-primary/10"
+              }`}
+              onClick={() => setActiveCategory("Agriculture")}
+            >
+              Agriculture
+            </Badge>
           </div>
         </section>
 
@@ -135,14 +202,17 @@ const InnovationHubPage = () => {
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold flex items-center gap-2">
-              <TrendingUp className="h-6 w-6 text-primary" />
-              Trending Solutions
+              {activeCategory === "Trending" && <TrendingUp className="h-6 w-6 text-primary" />}
+              {activeCategory === "All Categories"
+                ? "All Solutions"
+                : activeCategory === "Trending"
+                ? "Trending Solutions"
+                : `${activeCategory} Solutions`}
             </h2>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {innovations.map((innovation) => (
-              <Card key={innovation.title} className="glass-card p-6 hover:scale-105 transition-all group">
+            {filteredInnovations.map((innovation) => (
+              <Card key={innovation.id} className="glass-card p-6 hover:scale-105 transition-all group">
                 <div className="flex items-start justify-between mb-4">
                   <Badge className="bg-accent/20 text-accent border-accent/30 border">
                     {innovation.category}
@@ -154,14 +224,12 @@ const InnovationHubPage = () => {
                     </div>
                   )}
                 </div>
-
                 <h3 className="text-lg font-bold mb-3 group-hover:text-primary transition-colors">
                   {innovation.title}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                   {innovation.description}
                 </p>
-
                 <div className="flex items-center gap-3 mb-4">
                   <Avatar className="h-8 w-8 border border-primary/20">
                     <AvatarFallback className="bg-primary/10 text-primary text-xs">
@@ -173,7 +241,6 @@ const InnovationHubPage = () => {
                     <div className="text-xs text-muted-foreground">{innovation.school}</div>
                   </div>
                 </div>
-
                 <div className="flex items-center justify-between pt-4 border-t border-border">
                   <div className="flex items-center gap-4">
                     <button className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
@@ -185,14 +252,17 @@ const InnovationHubPage = () => {
                       <span className="text-sm font-medium">{innovation.comments}</span>
                     </button>
                   </div>
-                  <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
-                    View
-                  </Button>
+                  <Link to={`/solution/${innovation.id}`}>
+                    <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
+                      View
+                    </Button>
+                  </Link>
                 </div>
               </Card>
             ))}
           </div>
         </section>
+
 
         {/* Submit CTA */}
         <section className="text-center">
@@ -201,9 +271,11 @@ const InnovationHubPage = () => {
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
               Have a groundbreaking idea for Mars settlement? Submit your solution and get feedback from the global community.
             </p>
-            <Button size="lg" className="gradient-mars text-white font-semibold px-8">
-              Submit Solution
-            </Button>
+            <Link to="/submit-solution">
+              <Button size="lg" className="gradient-mars text-white font-semibold px-8">
+                Submit Solution
+              </Button>
+            </Link>
           </Card>
         </section>
       </main>

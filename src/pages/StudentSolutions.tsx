@@ -7,18 +7,18 @@ import { ArrowLeft, Users, Award, TrendingUp, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const topSolutions = [
-  { author: "Emma Zhang", school: "MIT", title: "AI-Powered Habitat Design", votes: 2341, category: "Habitat" },
-  { author: "Lucas Silva", school: "Stanford", title: "Quantum Water Filter", votes: 2198, category: "Water" },
-  { author: "Aisha Patel", school: "Caltech", title: "Self-Repairing Solar Cells", votes: 2087, category: "Energy" },
-  { author: "Jordan Lee", school: "UC Berkeley", title: "Vertical Farming Tower", votes: 1956, category: "Agriculture" },
-  { author: "Sofia Rossi", school: "ETH Zurich", title: "Regolith 3D Printer", votes: 1834, category: "Construction" },
+  { id: "1", author: "Emma Zhang", school: "MIT", title: "AI-Powered Habitat Design", votes: 2341, category: "Habitat" },
+  { id: "2", author: "Lucas Silva", school: "Stanford", title: "Quantum Water Filter", votes: 2198, category: "Water" },
+  { id: "3", author: "Aisha Patel", school: "Caltech", title: "Self-Repairing Solar Cells", votes: 2087, category: "Energy" },
+  { id: "4", author: "Jordan Lee", school: "UC Berkeley", title: "Vertical Farming Tower", votes: 1956, category: "Agriculture" },
+  { id: "5", author: "Sofia Rossi", school: "ETH Zurich", title: "Regolith 3D Printer", votes: 1834, category: "Construction" },
 ];
 
 const recentSolutions = [
-  { author: "Alex Kim", school: "Georgia Tech", title: "Mars Dust Storm Predictor", time: "2 hours ago", category: "Weather" },
-  { author: "Nina Kowalski", school: "Oxford", title: "Atmospheric CO₂ Converter", time: "5 hours ago", category: "Life Support" },
-  { author: "Ryan O'Connor", school: "Cambridge", title: "Emergency Medical Pod", time: "8 hours ago", category: "Healthcare" },
-  { author: "Yuki Tanaka", school: "Tokyo Tech", title: "Lightweight Rover Design", time: "12 hours ago", category: "Transportation" },
+  { id: "6", author: "Alex Kim", school: "Georgia Tech", title: "Mars Dust Storm Predictor", time: "2 hours ago", category: "Weather" },
+  { id: "7", author: "Nina Kowalski", school: "Oxford", title: "Atmospheric CO₂ Converter", time: "5 hours ago", category: "Life Support" },
+  { id: "8", author: "Ryan O'Connor", school: "Cambridge", title: "Emergency Medical Pod", time: "8 hours ago", category: "Healthcare" },
+  { id: "9", author: "Yuki Tanaka", school: "Tokyo Tech", title: "Lightweight Rover Design", time: "12 hours ago", category: "Transportation" },
 ];
 
 const StudentSolutions = () => {
@@ -102,6 +102,13 @@ const StudentSolutions = () => {
                     </div>
                   </div>
                 </div>
+                <div className="mt-4 text-center">
+                  <Link to={`/solution/${solution.id}`}>
+                    <Button size="sm" variant="secondary" className="bg-blue-600 hover:bg-blue-700 text-white">
+                      View Solution
+                    </Button>
+                  </Link>
+                </div>
               </Card>
             ))}
           </TabsContent>
@@ -131,6 +138,13 @@ const StudentSolutions = () => {
                     <div className="text-sm text-accent mt-2">↑ 24% today</div>
                   </div>
                 </div>
+                <div className="mt-4 text-center">
+                  <Link to={`/solution/${solution.id}`}>
+                    <Button size="sm" variant="secondary" className="bg-blue-600 hover:bg-blue-700 text-white">
+                      View Solution
+                    </Button>
+                  </Link>
+                </div>
               </Card>
             ))}
           </TabsContent>
@@ -159,15 +173,24 @@ const StudentSolutions = () => {
                     <Badge variant="outline" className="mt-2">New</Badge>
                   </div>
                 </div>
+                <div className="mt-4 text-center">
+                  <Link to={`/solution/${solution.id}`}>
+                    <Button size="sm" variant="secondary" className="bg-blue-600 hover:bg-blue-700 text-white">
+                      View Solution
+                    </Button>
+                  </Link>
+                </div>
               </Card>
             ))}
           </TabsContent>
         </Tabs>
 
         <div className="text-center mt-12">
-          <Button size="lg" className="gradient-mars text-white font-semibold px-8">
-            Submit Your Solution
-          </Button>
+          <Link to="/submit-solution">
+            <Button size="lg" className="gradient-mars text-white font-semibold px-8 hover:text-white">
+              Submit Your Solution
+            </Button>
+          </Link>
         </div>
       </main>
     </div>

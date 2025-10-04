@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "@/components/Navbar";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import BuildHabitat from "./pages/BuildHabitat";
@@ -15,7 +16,16 @@ import StudentSolutions from "./pages/StudentSolutions";
 import Achievements from "./pages/Achievements";
 import Leaderboard from "./pages/Leaderboard";
 import LearningPage from "./pages/LearningPage";
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
+import ProfilePage from "./pages/ProfilePage";
+import Features from "./pages/Features"; // Import Features page
+import About from "./pages/About"; // Import About page
+import CommunityPage from "./pages/CommunityPage"; // Import CommunityPage
+import SolutionDetails from "./pages/SolutionDetails"; // Import SolutionDetails page
+import { AuthProvider } from "./context/AuthContext";
 import { useState, useEffect } from 'react';
+import SubmitSolutionPage from "./pages/SubmitSolutionPage";
 
 const queryClient = new QueryClient();
 
@@ -40,25 +50,39 @@ const App = () => {
             {/* Optionally keep a blank screen or a loading spinner here */}
           </div>
         ) : (
-          <div className="animate-slide-in-from-top-fade-in">
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/build-habitat" element={<BuildHabitat />} />
-                <Route path="/water-extraction" element={<WaterExtraction />} />
-                <Route path="/solar-farm" element={<SolarFarm />} />
-                <Route path="/greenhouse" element={<Greenhouse />} />
-                <Route path="/start-mission" element={<StartMission />} />
-                <Route path="/innovation-hub" element={<InnovationHubPage />} />
-                <Route path="/student-solutions" element={<StudentSolutions />} />
-                <Route path="/achievements" element={<Achievements />} />
-                <Route path="/leaderboard" element={<Leaderboard />} />
-                <Route path="/learn-about-mars" element={<LearningPage />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </div>
+          <>
+            <AuthProvider>
+              <Navbar />
+              <div className="animate-slide-in-from-top-fade-in"> {/* Add padding-top for fixed navbar */}
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/features" element={<Features />} />
+                    <Route path="/explore-mission" element={<div>Explore Mission Page Placeholder</div>} />
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/signup" element={<SignUp />} /> {/* Add a new route for SignUp */}
+                    <Route path="/build-habitat" element={<BuildHabitat />} />
+                    <Route path="/water-extraction" element={<WaterExtraction />} />
+                    <Route path="/solar-farm" element={<SolarFarm />} />
+                    <Route path="/greenhouse" element={<Greenhouse />} />
+                    <Route path="/start-mission" element={<StartMission />} />
+                    <Route path="/innovation-hub" element={<InnovationHubPage />} />
+                    <Route path="/student-solutions" element={<StudentSolutions />} />
+                    <Route path="/achievements" element={<Achievements />} />
+                    <Route path="/leaderboard" element={<Leaderboard />} />
+                    <Route path="/learn-about-mars" element={<LearningPage />} />
+                    <Route path="/profile" element={<ProfilePage />} /> {/* New route for ProfilePage */}
+                    <Route path="/community" element={<CommunityPage />} /> {/* New route for CommunityPage */}
+                    <Route path="/solution/:id" element={<SolutionDetails />} /> {/* Route for SolutionDetails */}
+                    <Route path="/submit-solution" element={<SubmitSolutionPage />} /> {/* New route for SubmitSolutionPage */}
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </BrowserRouter>
+              </div>
+            </AuthProvider>
+          </>
         )}
       </TooltipProvider>
     </QueryClientProvider>

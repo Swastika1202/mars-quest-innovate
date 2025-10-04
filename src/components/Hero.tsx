@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Rocket, Users, Trophy } from "lucide-react";
 import marsHero from "@/assets/mars-hero.jpg";
+import { Link } from "react-router-dom"; // Import Link
 
 export const Hero = () => {
   return (
@@ -31,14 +32,18 @@ export const Hero = () => {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-          <Button size="lg" className="gradient-mars text-white font-semibold px-8 py-6 text-lg hover:opacity-90 transition-opacity">
-            <Rocket className="mr-2 h-5 w-5" />
-            Start Your Mission
-          </Button>
-          <Button size="lg" variant="outline" className="border-2 border-primary/50 hover:bg-primary/10 px-8 py-6 text-lg">
-            <Users className="mr-2 h-5 w-5" />
-            Join Innovation Hub
-          </Button>
+          <Link to="/start-mission"> {/* Wrap Button with Link */}
+            <Button size="lg" className="gradient-mars text-white font-semibold px-8 py-6 text-lg">
+              <Rocket className="mr-2 h-5 w-5" />
+              Start Your Mission
+            </Button>
+          </Link>
+          <Link to="/community"> {/* Wrap Button with Link */}
+            <Button size="lg" variant="outline" className="border-2 border-primary/50 hover:bg-primary/10 px-8 py-6 text-lg">
+              <Users className="mr-2 h-5 w-5" />
+              Join Innovation Hub
+            </Button>
+          </Link>
         </div>
 
         {/* Stats */}
