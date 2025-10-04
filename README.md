@@ -1,73 +1,152 @@
-# Welcome to your Lovable project
+ Mars Quest Backend API
 
-## Project info
+A Node.js/Express backend API that integrates with NASA's official APIs to provide Mars mission data for the Mars Quest educational platform.
 
-**URL**: https://lovable.dev/projects/b984acf0-e120-412f-b2da-376b2fdd34c5
+## 🚀 Features
 
-## How can I edit this code?
+- **NASA API Integration**: Real-time Mars data from official NASA APIs
+- **Mission Management**: Pre-defined Mars settlement missions
+- **TypeScript**: Full type safety and IntelliSense support
+- **RESTful API**: Clean, documented endpoints
+- **Error Handling**: Comprehensive error handling and logging
+- **Security**: Helmet.js security headers and CORS protection
 
-There are several ways of editing your application.
+## 📡 NASA APIs Integrated
 
-**Use Lovable**
+- **Mars Rover Photos API**: Images from Curiosity, Opportunity, Spirit, and Perseverance
+- **Mars Weather Service**: Real-time weather data from InSight lander
+- **Astronomy Picture of the Day (APOD)**: Daily space images
+- **Mars Rover Manifest**: Mission details and photo counts
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b984acf0-e120-412f-b2da-376b2fdd34c5) and start prompting.
+## 🛠️ Setup
 
-Changes made via Lovable will be committed automatically to this repo.
+### 1. Get NASA API Key
+1. Visit [NASA API Portal](https://api.nasa.gov/)
+2. Fill out the registration form
+3. Copy your API key
 
-**Use your preferred IDE**
+### 2. Environment Setup
+```bash
+# Copy the example environment file
+cp env.example .env
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+# Edit .env and add your NASA API key
+NASA_API_KEY=your_nasa_api_key_here
 ```
 
-**Edit a file directly in GitHub**
+### 3. Install Dependencies
+```bash
+npm install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### 4. Development
+```bash
+# Start development server with hot reload
+npm run dev
 
-**Use GitHub Codespaces**
+# Build for production
+npm run build
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Start production server
+npm start
+```
 
-## What technologies are used for this project?
+## 📚 API Endpoints
 
-This project is built with:
+### NASA Data Endpoints
+- `GET /api/nasa/mars-photos` - Get Mars rover photos
+- `GET /api/nasa/mars-weather` - Get Mars weather data
+- `GET /api/nasa/apod` - Get Astronomy Picture of the Day
+- `GET /api/nasa/rover-manifest/:rover` - Get rover mission details
+- `GET /api/nasa/rovers` - Get available rovers
+- `GET /api/nasa/cameras/:rover` - Get available cameras for a rover
+- `GET /api/nasa/random-photo` - Get random Mars photo for missions
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Mission Endpoints
+- `GET /api/missions` - Get all missions (with optional filters)
+- `GET /api/missions/:id` - Get specific mission
+- `GET /api/missions/category/:category` - Get missions by category
+- `GET /api/missions/meta/categories` - Get available categories
+- `GET /api/missions/meta/difficulties` - Get difficulty levels
 
-## How can I deploy this project?
+### Health Check
+- `GET /health` - API health status
 
-Simply open [Lovable](https://lovable.dev/projects/b984acf0-e120-412f-b2da-376b2fdd34c5) and click on Share -> Publish.
+## 🔧 Example Usage
 
-## Can I connect a custom domain to my Lovable project?
+### Get Mars Photos
+```bash
+curl "http://localhost:3001/api/nasa/mars-photos?rover=curiosity&sol=1000&camera=MAST"
+```
 
-Yes, you can!
+### Get Mars Weather
+```bash
+curl "http://localhost:3001/api/nasa/mars-weather"
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Get Missions
+```bash
+curl "http://localhost:3001/api/missions?category=habitat&difficulty=intermediate"
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 🏗️ Project Structure
+
+```
+backend/
+├── src/
+│   ├── routes/          # API route handlers
+│   ├── services/        # Business logic and NASA API integration
+│   ├── types/           # TypeScript type definitions
+│   ├── middleware/      # Express middleware
+│   └── index.ts         # Main application entry point
+├── dist/                # Compiled JavaScript (after build)
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+## 🔗 Frontend Integration
+
+The backend is designed to work seamlessly with the React frontend:
+
+1. **CORS**: Configured to allow requests from `http://localhost:5173`
+2. **JSON API**: All responses are in JSON format
+3. **Error Handling**: Consistent error response format
+4. **TypeScript**: Shared types can be used in frontend
+
+## 🚀 Next Steps
+
+- [ ] Add user authentication and profiles
+- [ ] Implement mission progress tracking
+- [ ] Add leaderboard functionality
+- [ ] Integrate with database (PostgreSQL/MongoDB)
+- [ ] Add caching for NASA API responses
+- [ ] Implement rate limiting
+- [ ] Add API documentation with Swagger
+
+## 📝 Environment Variables
+
+```env
+# NASA API Configuration
+NASA_API_KEY=your_nasa_api_key_here
+NASA_API_BASE_URL=https://api.nasa.gov
+
+# Server Configuration
+PORT=3001
+NODE_ENV=development
+
+# CORS Configuration
+FRONTEND_URL=http://localhost:5173
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## 📄 License
+
+This project is part of the Mars Quest educational platform.
