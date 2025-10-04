@@ -111,6 +111,11 @@ export const InnovationHub = () => {
               Explore All Solutions
             </Button>
           </Link>
+          <Link to="/learn-about-mars" className="ml-4">
+            <Button size="lg" className="gradient-mars text-white font-semibold px-8 py-6 text-lg hover:opacity-90 transition-opacity">
+              Learn About Mars
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

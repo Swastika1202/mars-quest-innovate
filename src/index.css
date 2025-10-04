@@ -61,6 +61,19 @@ All colors MUST be HSL.
   }
 }
 
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px hsl(14 85% 55%), 0 0 10px hsl(14 85% 55% / 0.5);
+  }
+  50% {
+    box-shadow: 0 0 10px hsl(14 85% 55%), 0 0 20px hsl(14 85% 55% / 0.8);
+  }
+}
+
+.animate-narration-glow {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -106,5 +119,20 @@ All colors MUST be HSL.
   
   .animate-pulse-slow {
     animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes slideInFromTopFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-slide-in-from-top-fade-in {
+    animation: slideInFromTopFadeIn 1s ease-out forwards;
   }
 }
