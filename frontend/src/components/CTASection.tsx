@@ -41,7 +41,7 @@ export const CTASection = () => {
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500" />
-                <span>Real NASA data</span>
+                <span>Live Mars Data</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500" />

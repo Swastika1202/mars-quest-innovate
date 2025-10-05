@@ -16,7 +16,7 @@ export const MarsDataShowcase = () => {
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Live <span className="text-gradient-mars">Mars Data</span>
+             <span className="text-gradient-mars">Mars Data</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Real-time data from NASA's Mars missions. Explore actual images and scientific data from the Red Planet.
