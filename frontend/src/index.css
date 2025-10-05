@@ -136,3 +136,1454 @@ All colors MUST be HSL.
     animation: slideInFromTopFadeIn 1s ease-out forwards;
   }
 }
+
+/* Learning Page Chapter-Specific Animation Styles */
+
+/* Welcome to Mars Animation */
+@keyframes planet-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes connection-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+.welcome-animation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.space-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+  border-radius: 8px;
+  top: 0;
+  left: 0;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 2px #ffffff;
+}
+
+.star-1 { top: 15%; left: 10%; }
+.star-2 { top: 25%; right: 15%; }
+.star-3 { top: 45%; left: 20%; }
+.star-4 { bottom: 30%; right: 25%; }
+.star-5 { bottom: 20%; left: 35%; }
+
+.mars-planet {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  animation: planet-rotate 4s linear infinite;
+  z-index: 2;
+}
+
+.planet-core {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #dc2626 0%, #991b1b 100%);
+  border-radius: 50%;
+  position: relative;
+}
+
+.planet-surface {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(circle, #7f1d1d 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.welcome-text {
+  position: absolute;
+  top: -20px;
+  font-size: 23px;
+  z-index: 3;
+}
+
+.mars-glow-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border: 2px solid rgba(220, 38, 38, 0.3);
+  border-radius: 50%;
+  animation: glow-pulse 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+.earth-mars-connection {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+}
+
+.earth {
+  font-size: 30px;
+  animation: earth-orbit 3s ease-in-out infinite;
+}
+
+@keyframes earth-orbit {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.connection-line {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #dc2626);
+  animation: connection-pulse 2s ease-in-out infinite;
+}
+
+.mars {
+  font-size: 30px;
+  animation: mars-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes mars-glow {
+  0% { filter: drop-shadow(0 0 5px #dc2626); }
+  100% { filter: drop-shadow(0 0 15px #dc2626); }
+}
+
+/* Cold Climate Animation */
+@keyframes mercury-rise {
+  0% { height: 20%; }
+  100% { height: 80%; }
+}
+
+@keyframes snowfall {
+  0% { transform: translateY(-10px) translateX(0px); opacity: 1; }
+  100% { transform: translateY(60px) translateX(10px); opacity: 0.3; }
+}
+
+@keyframes mars-bg-float {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-5px) scale(1.02); }
+}
+
+.cold-climate-animation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  overflow: hidden;
+}
+
+.mars-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/mars.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: mars-bg-float 4s ease-in-out infinite;
+  z-index: -1;
+}
+
+.temperature-display {
+  text-align: center;
+  z-index: 2;
+}
+
+.temp-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ef4444;
+  margin-bottom: 10px;
+}
+
+.thermometer {
+  width: 20px;
+  height: 80px;
+  background: #374151;
+  border-radius: 10px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.mercury {
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  width: 16px;
+  background: linear-gradient(to top, #ef4444, #dc2626);
+  border-radius: 0 0 8px 8px;
+  animation: mercury-rise 2s ease-in-out infinite alternate;
+}
+
+.full-screen-snow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.flake {
+  position: absolute;
+  font-size: 20px;
+  animation: snowfall 3s linear infinite;
+  opacity: 0.8;
+}
+
+.flake-1 { top: -10%; left: 10%; animation-delay: 0s; }
+.flake-2 { top: -10%; left: 30%; animation-delay: 0.5s; }
+.flake-3 { top: -10%; left: 50%; animation-delay: 1s; }
+.flake-4 { top: -10%; right: 20%; animation-delay: 1.5s; }
+.flake-5 { top: -10%; right: 10%; animation-delay: 2s; }
+.flake-6 { top: -10%; right: 40%; animation-delay: 2.5s; }
+
+/* Thin Atmosphere Animation */
+.atmosphere-animation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+@keyframes layer-breathe {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+@keyframes heat-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.mars-image-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+@keyframes air-float {
+  0% { transform: translate(0px, 0px) scale(0.8); opacity: 0.3; }
+  25% { transform: translate(10px, -5px) scale(1.1); opacity: 0.6; }
+  50% { transform: translate(-5px, 10px) scale(0.9); opacity: 0.4; }
+  75% { transform: translate(15px, 5px) scale(1.2); opacity: 0.7; }
+  100% { transform: translate(0px, 0px) scale(0.8); opacity: 0.3; }
+}
+
+.mars-planet-small {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75px;
+  height: 75px;
+  animation: planet-rotate 6s linear infinite;
+  z-index: 1;
+}
+
+.atmosphere-air-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.air-particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(169, 169, 169, 0.4) 70%, transparent 100%);
+  border-radius: 50%;
+  animation: air-float 4s ease-in-out infinite;
+}
+
+.particle-1 { top: 30%; left: 15%; animation-delay: 0s; }
+.particle-2 { top: 60%; left: 25%; animation-delay: 0.8s; }
+.particle-3 { top: 45%; right: 30%; animation-delay: 1.6s; }
+.particle-4 { bottom: 35%; left: 40%; animation-delay: 2.4s; }
+.particle-5 { bottom: 25%; right: 15%; animation-delay: 3.2s; }
+
+.atmosphere-layers {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 50%;
+  animation: layer-breathe 3s ease-in-out infinite;
+}
+
+.layer-thin {
+  width: 60%;
+  height: 60%;
+  top: 20%;
+  left: 20%;
+  animation-delay: 0.5s;
+}
+
+.co2-molecule {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-weight: bold;
+  color: #ef4444;
+  animation: molecule-float 2s ease-in-out infinite;
+}
+
+@keyframes molecule-float {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.2); }
+}
+
+.heat-escape {
+  text-align: center;
+}
+
+.heat-arrow {
+  font-size: 24px;
+  animation: heat-float 1.5s ease-in-out infinite;
+}
+
+.escape-text {
+  font-size: 10px;
+  color: #fbbf24;
+  margin-top: 5px;
+}
+
+/* Survival Challenge Animation */
+@keyframes factor-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; }
+}
+
+@keyframes arrow-glow {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.mars-challenge-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 50%, #dc2626 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: -1;
+}
+
+.challenge-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fbbf24;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+  animation: challenge-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes challenge-glow {
+  0% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
+  100% { text-shadow: 0 0 20px rgba(251, 191, 36, 0.8); }
+}
+
+.challenge-obstacles {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.obstacle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 15px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  animation: obstacle-pulse 2s ease-in-out infinite;
+}
+
+@keyframes obstacle-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+.obstacle-icon {
+  font-size: 20px;
+}
+
+.obstacle-text {
+  font-size: 12px;
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.solution-path {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.solution-arrow {
+  font-size: 16px;
+  animation: solution-flow 1.5s ease-in-out infinite;
+}
+
+@keyframes solution-flow {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* Mars Survival Story Animation */
+@keyframes survival-sequence {
+  0% { opacity: 1; }
+  25% { opacity: 1; }
+  50% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+@keyframes fog-breath {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.2); }
+}
+
+@keyframes oxygen-float {
+  0% { transform: translateY(0px) translateX(0px); opacity: 0.8; }
+  50% { transform: translateY(-20px) translateX(10px); opacity: 1; }
+  100% { transform: translateY(-40px) translateX(-5px); opacity: 0.3; }
+}
+
+@keyframes mercury-drop {
+  0% { height: 15%; background: linear-gradient(to top, #3b82f6, #1e40af); }
+  50% { height: 10%; background: linear-gradient(to top, #1e40af, #1e3a8a); }
+  100% { height: 15%; background: linear-gradient(to top, #3b82f6, #1e40af); }
+}
+
+@keyframes sun-pulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.1); filter: brightness(1.3); }
+}
+
+@keyframes radiation-ripple {
+  0% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.5); opacity: 0.3; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes soil-glow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+@keyframes astronaut-plant {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes seed-plant {
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-10px) scale(0.8); }
+  100% { transform: translateY(-15px) scale(0.6); }
+}
+
+@keyframes dome-light {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.4); }
+}
+
+@keyframes greenhouse-grow {
+  0% { transform: scale(0.8); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes oxygen-swirl {
+  0% { transform: rotate(0deg) scale(0.8); opacity: 0.6; }
+  50% { transform: rotate(180deg) scale(1.2); opacity: 1; }
+  100% { transform: rotate(360deg) scale(0.8); opacity: 0.6; }
+}
+
+@keyframes shield-protect {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes filter-clean {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes sprout-emerge {
+  0% { transform: translateY(10px) scale(0); opacity: 0; }
+  50% { transform: translateY(0px) scale(1.2); opacity: 1; }
+  100% { transform: translateY(0px) scale(1); opacity: 1; }
+}
+
+@keyframes colony-thrive {
+  0%, 100% { transform: translateY(0px); opacity: 1; }
+  50% { transform: translateY(-3px); opacity: 1; }
+}
+
+@keyframes hope-glow {
+  0%, 100% { text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+  50% { text-shadow: 0 0 20px rgba(16, 185, 129, 0.8); }
+}
+
+/* Mars Survival Story - Simplified Animation */
+@keyframes survival-bg-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes element-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.6; filter: brightness(1); }
+  50% { opacity: 1; filter: brightness(1.3); }
+}
+
+@keyframes warning-flash {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+@keyframes hope-shine {
+  0%, 100% { text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+  50% { text-shadow: 0 0 20px rgba(16, 185, 129, 0.9); }
+}
+
+.mars-survival-story {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 50%, #dc2626 100%);
+  background-size: 200% 200%;
+  animation: survival-bg-shift 8s ease-in-out infinite;
+  overflow: hidden;
+}
+
+.main-survival-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.mars-landscape-bg {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 30%;
+  background: linear-gradient(45deg, #7f1d1d 0%, #991b1b 50%, #7f1d1d 100%);
+  clip-path: polygon(0 100%, 100% 100%, 90% 80%, 80% 70%, 70% 60%, 60% 50%, 50% 40%, 40% 30%, 30% 20%, 20% 10%, 10% 0%, 0 0%);
+  animation: element-float 4s ease-in-out infinite;
+}
+
+.challenge-elements {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.cold-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.thermometer-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.thermometer {
+  width: 8px;
+  height: 50px;
+  background: #374151;
+  border-radius: 4px;
+  position: relative;
+}
+
+.mercury {
+  position: absolute;
+  bottom: 0;
+  left: 1px;
+  width: 6px;
+  background: linear-gradient(to top, #3b82f6, #1e40af);
+  border-radius: 0 0 3px 3px;
+}
+
+.temp-text {
+  font-size: 10px;
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.oxygen-escape {
+  position: relative;
+}
+
+.oxygen-bubble {
+  font-size: 12px;
+  color: #3b82f6;
+  animation: element-float 2s ease-in-out infinite;
+}
+
+.radiation-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sun-harassment {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.sun-small {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #fef3c7 0%, #fbbf24 50%, #f59e0b 100%);
+  border-radius: 50%;
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.rad-waves {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+}
+
+.rad-wave {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  border-radius: 50%;
+  animation: element-float 3s ease-in-out infinite;
+}
+
+.soil-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.toxic-glow {
+  width: 40px;
+  height: 25px;
+  background: radial-gradient(ellipse, rgba(124, 58, 237, 0.6) 0%, rgba(91, 33, 182, 0.3) 100%);
+  border-radius: 50%;
+  animation: warning-flash 1.5s ease-in-out infinite;
+}
+
+.warning-text {
+  font-size: 12px;
+  animation: warning-flash 1.5s ease-in-out infinite;
+}
+
+.solution-elements {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.solution-domes {
+  display: flex;
+  gap: 8px;
+}
+
+.dome-icon {
+  font-size: 20px;
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.greenhouse-solution {
+  display: flex;
+  align-items: center;
+}
+
+.greenhouse-icon {
+  font-size: 24px;
+  animation: element-float 2s ease-in-out infinite;
+}
+
+.oxygen-generator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.generator-icon {
+  font-size: 18px;
+  animation: element-float 2s ease-in-out infinite;
+}
+
+.oxygen-swirl {
+  font-size: 14px;
+  color: #3b82f6;
+  animation: element-float 1.5s ease-in-out infinite;
+}
+
+.protection-shield {
+  display: flex;
+  align-items: center;
+}
+
+.shield-ring {
+  width: 35px;
+  height: 35px;
+  border: 2px solid rgba(16, 185, 129, 0.6);
+  border-radius: 50%;
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.clean-agriculture {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-icon {
+  font-size: 18px;
+  animation: element-float 2s ease-in-out infinite;
+}
+
+.healthy-sprouts {
+  display: flex;
+  gap: 3px;
+}
+
+.sprout {
+  font-size: 14px;
+  animation: element-float 1.5s ease-in-out infinite;
+}
+
+.hope-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+}
+
+.hope-text {
+  font-size: 12px;
+  color: #10b981;
+  font-weight: bold;
+  animation: hope-shine 2s ease-in-out infinite;
+}
+
+/* Scene 1: Cold and Thin Air */
+.scene-1 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #4a0e0e 0%, #7f1d1d 50%, #991b1b 100%);
+}
+
+.mars-landscape {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(45deg, #7f1d1d 0%, #991b1b 50%, #7f1d1d 100%);
+  clip-path: polygon(0 100%, 100% 100%, 90% 80%, 80% 70%, 70% 60%, 60% 50%, 50% 40%, 40% 30%, 30% 20%, 20% 10%, 10% 0%, 0 0%);
+}
+
+.astronaut-helmet {
+  position: absolute;
+  top: 30%;
+  left: 20%;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.helmet-fog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 20px;
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.6) 0%, transparent 70%);
+  animation: fog-breath 1.5s ease-in-out infinite;
+}
+
+.oxygen-escape {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+}
+
+.oxygen-bubble {
+  position: absolute;
+  font-size: 12px;
+  color: #3b82f6;
+  animation: oxygen-float 2s ease-in-out infinite;
+}
+
+.bubble-1 { top: 0; left: 0; }
+.bubble-2 { top: 10px; left: 15px; }
+
+.thermometer-low {
+  position: absolute;
+  top: 40%;
+  right: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.thermometer-body {
+  width: 8px;
+  height: 60px;
+  background: #374151;
+  border-radius: 4px;
+  position: relative;
+}
+
+.mercury-low {
+  position: absolute;
+  bottom: 0;
+  left: 1px;
+  width: 6px;
+  background: linear-gradient(to top, #3b82f6, #1e40af);
+  border-radius: 0 0 3px 3px;
+  animation: mercury-drop 1.5s ease-in-out infinite;
+}
+
+.temp-reading {
+  font-size: 10px;
+  color: #ef4444;
+  font-weight: bold;
+}
+
+/* Scene 2: Radiation */
+.scene-2 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+}
+
+.harsh-sun {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  animation: sun-pulse 2s ease-in-out infinite;
+}
+
+.sun-core {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #fef3c7 0%, #fbbf24 50%, #f59e0b 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+}
+
+.sun-rays-rad {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+}
+
+.ray-line {
+  position: absolute;
+  width: 2px;
+  height: 15px;
+  background: linear-gradient(to bottom, #fbbf24, transparent);
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+}
+
+.ray-1 { transform: translate(-50%, -100%) rotate(0deg); }
+.ray-2 { transform: translate(-50%, -100%) rotate(90deg); }
+.ray-3 { transform: translate(-50%, -100%) rotate(180deg); }
+.ray-4 { transform: translate(-50%, -100%) rotate(270deg); }
+
+.radiation-waves {
+  position: absolute;
+  bottom: 30%;
+  width: 100%;
+}
+
+.wave {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(90deg, transparent 0%, rgba(251, 191, 36, 0.3) 50%, transparent 100%);
+  animation: radiation-ripple 3s ease-in-out infinite;
+}
+
+.wave-1 { bottom: 0; }
+.wave-2 { bottom: 10px; }
+.wave-3 { bottom: 20px; }
+
+/* Scene 3: Toxic Soil */
+.scene-3 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #7c2d12 0%, #991b1b 50%, #7f1d1d 100%);
+}
+
+.astronaut-planting {
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  animation: astronaut-plant 2s ease-in-out infinite;
+}
+
+.astronaut-figure {
+  font-size: 30px;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+.planting-motion {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.seed {
+  font-size: 16px;
+  animation: seed-plant 1.5s ease-in-out infinite;
+}
+
+.toxic-soil {
+  position: absolute;
+  bottom: 20%;
+  right: 25%;
+  text-align: center;
+}
+
+.soil-glow {
+  width: 80px;
+  height: 40px;
+  background: linear-gradient(135deg, #7c2d12 0%, #991b1b 100%);
+  border-radius: 50%;
+  margin-bottom: 5px;
+  animation: soil-glow 2s ease-in-out infinite;
+}
+
+.purple-glow {
+  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.5);
+}
+
+.perchlorate-warning {
+  font-size: 10px;
+  color: #fbbf24;
+  font-weight: bold;
+}
+
+/* Scene 4: Solutions */
+.scene-4 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+}
+
+.solution-domes {
+  display: flex;
+  gap: 10px;
+}
+
+.dome {
+  font-size: 24px;
+  animation: dome-light 2s ease-in-out infinite;
+}
+
+.greenhouse-solution {
+  position: relative;
+}
+
+.greenhouse {
+  font-size: 28px;
+  animation: greenhouse-grow 2s ease-in-out infinite;
+}
+
+.oxygen-generators {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.generator {
+  font-size: 20px;
+  animation: oxygen-swirl 2s ease-in-out infinite;
+}
+
+.oxygen-swirl {
+  font-size: 16px;
+  color: #3b82f6;
+  animation: oxygen-swirl 2s ease-in-out infinite;
+}
+
+.protective-shields {
+  position: relative;
+}
+
+.shield {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(16, 185, 129, 0.5);
+  border-radius: 50%;
+  animation: shield-protect 2s ease-in-out infinite;
+}
+
+.soil-filters {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter {
+  font-size: 20px;
+  animation: filter-clean 2s ease-in-out infinite;
+}
+
+.clean-sprouts {
+  display: flex;
+  gap: 5px;
+}
+
+.sprout {
+  font-size: 16px;
+  animation: sprout-emerge 2s ease-in-out infinite;
+}
+
+/* Ending Scene: Hope */
+.scene-ending {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%);
+}
+
+.thriving-colony {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: colony-thrive 3s ease-in-out infinite;
+}
+
+.colony-domes {
+  display: flex;
+  gap: 8px;
+}
+
+.colony-dome {
+  font-size: 20px;
+  animation: dome-light 2s ease-in-out infinite;
+}
+
+.green-patches {
+  display: flex;
+  gap: 10px;
+}
+
+.green-patch {
+  font-size: 14px;
+  animation: sprout-emerge 2s ease-in-out infinite;
+}
+
+.hope-message {
+  text-align: center;
+  max-width: 80%;
+}
+
+.hope-text {
+  font-size: 14px;
+  color: #10b981;
+  font-weight: bold;
+  text-align: center;
+  animation: hope-glow 2s ease-in-out infinite;
+}
+
+/* Habitat Dome Animation */
+@keyframes dome-build {
+  0% { opacity: 0; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shield-ripple {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.dome-animation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dome-structure {
+  position: relative;
+  width: 80px;
+  height: 50px;
+  animation: dome-build 2s ease-in-out;
+}
+
+.dome-base {
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(135deg, #64748b, #475569);
+  border-radius: 0 0 40px 40px;
+}
+
+.dome-glass {
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  width: 60px;
+  height: 40px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(147, 197, 253, 0.3));
+  border-radius: 50% 50% 0 0;
+  border: 2px solid rgba(59, 130, 246, 0.5);
+}
+
+.dome-entrance {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+}
+
+.protection-shield {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border: 2px solid rgba(16, 185, 129, 0.3);
+  border-radius: 50%;
+}
+
+.shield-wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  border-radius: 50%;
+  animation: shield-ripple 2s ease-in-out infinite;
+}
+
+/* Greenhouse Animation */
+@keyframes plant-grow {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes water-drip {
+  0% { transform: translateY(-10px); opacity: 0; }
+  100% { transform: translateY(10px); opacity: 1; }
+}
+
+@keyframes greenhouse-glow {
+  0% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.3); }
+  100% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+}
+
+.greenhouse-animation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.greenhouse-structure {
+  position: relative;
+  width: 80px;
+  height: 50px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(147, 197, 253, 0.2));
+  border: 2px solid rgba(59, 130, 246, 0.4);
+  border-radius: 8px;
+  animation: greenhouse-glow 2s ease-in-out infinite alternate;
+}
+
+.frame {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 4px;
+}
+
+.plants {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.plant {
+  animation: plant-grow 2s ease-in-out infinite;
+}
+
+.plant-1 { animation-delay: 0s; }
+.plant-2 { animation-delay: 0.5s; }
+.plant-3 { animation-delay: 1s; }
+
+.water-drops {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.drop {
+  font-size: 12px;
+  animation: water-drip 1.5s ease-in-out infinite;
+}
+
+/* Solar Panel Animation */
+@keyframes panel-tilt {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(5deg); }
+}
+
+@keyframes energy-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.solar-animation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.solar-farm {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.panel {
+  font-size: 20px;
+  animation: panel-tilt 3s ease-in-out infinite;
+}
+
+.panel-1 { animation-delay: 0s; }
+.panel-2 { animation-delay: 0.4s; }
+.panel-3 { animation-delay: 0.8s; }
+
+.sun-rays {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.ray {
+  font-size: 20px;
+  animation: energy-pulse 1.5s ease-in-out infinite;
+}
+
+.ray-1 { animation-delay: 0s; }
+.ray-2 { animation-delay: 0.5s; }
+
+.energy-flow {
+  font-size: 12px;
+  color: #fbbf24;
+  animation: energy-pulse 1s ease-in-out infinite;
+}
+
+/* Future Mars City Animation */
+@keyframes city-build {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0px); opacity: 1; }
+}
+
+@keyframes building-rise {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes celebration-bounce {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-15px) scale(1.2); }
+}
+
+.future-animation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.mars-city {
+  display: flex;
+  gap: 8px;
+  animation: city-build 2s ease-out;
+}
+
+.building {
+  animation: building-rise 2s ease-in-out infinite;
+}
+
+.b1 { animation-delay: 0s; }
+.b2 { animation-delay: 0.3s; }
+.b3 { animation-delay: 0.6s; }
+
+.mars-surface-final {
+  width: 100px;
+  height: 8px;
+  background: linear-gradient(90deg, #7f1d1d, #991b1b);
+  border-radius: 4px;
+}
+
+.celebration {
+  position: absolute;
+  top: 20%;
+  right: 20%;
+  display: flex;
+  gap: 10px;
+}
+
+.confetti {
+  font-size: 16px;
+  animation: celebration-bounce 1.5s ease-in-out infinite;
+}
+
+.c1 { animation-delay: 0s; }
+.c2 { animation-delay: 0.5s; }

@@ -1,14 +1,9 @@
-import { useMarsPhotos, useAPOD, useRandomMarsPhoto } from "../hooks/useApi";
+import { useMarsPhotos, useAPOD } from "../hooks/useApi";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { Loader2, Camera, Calendar, MapPin, RefreshCw } from "lucide-react";
-import { useState } from "react";
+import { Loader2, Calendar } from "lucide-react";
 
 export const MarsDataShowcase = () => {
-  const [refreshKey, setRefreshKey] = useState(0);
-  
-  const { data: randomPhoto, isLoading: photoLoading, error: photoError } = useRandomMarsPhoto();
   const { data: apod, isLoading: apodLoading, error: apodError } = useAPOD();
   const { data: recentPhotos, isLoading: recentLoading } = useMarsPhotos({ 
     rover: 'curiosity', 
@@ -16,90 +11,18 @@ export const MarsDataShowcase = () => {
     page: 1 
   });
 
-  const handleRefresh = () => {
-    setRefreshKey(prev => prev + 1);
-  };
-
   return (
     <section className="py-20 px-4">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Live <span className="text-gradient-mars">Mars Data</span>
+             <span className="text-gradient-mars">Mars Data</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Real-time data from NASA's Mars missions. Explore actual images and scientific data from the Red Planet.
           </p>
         </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Random Mars Photo */}
-          <Card className="glass-card">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Camera className="h-5 w-5 text-primary" />
-                  <CardTitle>Random Mars Photo</CardTitle>
-                </div>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={handleRefresh}
-                  disabled={photoLoading}
-                >
-                  {photoLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <RefreshCw className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-              <CardDescription>
-                A random image from NASA's Mars rovers
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {photoLoading ? (
-                <div className="flex items-center justify-center h-64">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                </div>
-              ) : photoError ? (
-                <div className="text-center text-muted-foreground py-8">
-                  <p>Unable to load Mars photo</p>
-                  <p className="text-sm">NASA API key may be required</p>
-                </div>
-              ) : randomPhoto ? (
-                <div className="space-y-4">
-                  <img 
-                    src={randomPhoto.img_src} 
-                    alt={`Mars photo from ${randomPhoto.rover.name}`}
-                    className="w-full h-64 object-cover rounded-lg"
-                  />
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm font-medium">{randomPhoto.rover.name} Rover</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">
-                        Sol {randomPhoto.sol} • {randomPhoto.earth_date}
-                      </span>
-                    </div>
-                    <div className="flex gap-2">
-                      <Badge variant="secondary">{randomPhoto.camera.full_name}</Badge>
-                      <Badge variant="outline">{randomPhoto.rover.status}</Badge>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-center text-muted-foreground py-8">
-                  <p>No photo available</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
+        <div className="grid grid-cols-1 gap-8">
           {/* Astronomy Picture of the Day */}
           <Card className="glass-card">
             <CardHeader>

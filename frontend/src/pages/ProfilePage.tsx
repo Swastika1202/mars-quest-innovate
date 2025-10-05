@@ -5,14 +5,16 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import { Pencil, Save, BellRing, BellOff, User, BookOpen, Lightbulb, Users, Settings as SettingsIcon, LogIn, LogOut } from 'lucide-react'; // Icons for edit, save, notifications, and sidebar items
+import { Pencil, Save, BellRing, BellOff, User, BookOpen, Lightbulb, Users, Settings as SettingsIcon, LogIn, LogOut, MessageCircle } from 'lucide-react'; // Icons for edit, save, notifications, and sidebar items
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const ProfilePage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const { isLoggedIn, login, logout } = useAuth(); // Use AuthContext
   const [selectedSection, setSelectedSection] = useState('details'); // 'details', 'missions', 'solutions', 'communities', 'settings'
+  const navigate = useNavigate();
   const [profileData, setProfileData] = useState({
     name: "John Doe",
     email: "john.doe@example.com",
@@ -173,9 +175,27 @@ const ProfilePage: React.FC = () => {
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-300 text-sm mb-3">{community.description}</p>
-                    <div className="flex items-center gap-2 text-gray-400 text-sm">
+                    <div className="flex items-center gap-2 text-gray-400 text-sm mb-3">
                       <Users className="h-4 w-4" />
                       <span>{community.members.toLocaleString()} members</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={() => navigate(`/chat/${community.id}`)}
+                        className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm"
+                        size="sm"
+                      >
+                        <MessageCircle className="h-4 w-4 mr-2" />
+                        Chat
+                      </Button>
+                      <Button
+                        onClick={() => navigate('/community')}
+                        variant="outline"
+                        className="flex-1 border-gray-600 text-gray-300 hover:bg-gray-700 text-sm"
+                        size="sm"
+                      >
+                        View
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>

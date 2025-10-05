@@ -12,7 +12,7 @@ class NASAService {
 
   constructor() {
     this.baseURL = process.env.NASA_API_BASE_URL || 'https://api.nasa.gov';
-    this.apiKey = process.env.NASA_API_KEY || 'DEMO_KEY';
+    this.apiKey = process.env.NASA_API_KEY || 'YLrI2y7waH9U8PkrjabVyBXaI4uBqzDkgA0Wfw6C';
     if (!this.apiKey || this.apiKey === 'your_nasa_api_key_here') {
       console.warn('⚠️  Using DEMO_KEY for NASA API. For production, set NASA_API_KEY in environment variables.');
       this.apiKey = 'DEMO_KEY';

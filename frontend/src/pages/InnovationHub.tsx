@@ -87,29 +87,15 @@ const topRatedSolutions = [
 
 const InnovationHubPage = () => {
   const [activeCategory, setActiveCategory] = useState("All Categories");
-  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredInnovations = (() => {
-    let filtered = innovations;
-
-    // Apply category filter
-    if (activeCategory === "Trending") {
-      filtered = filtered.filter(innovation => innovation.featured);
-    } else if (activeCategory !== "All Categories") {
-      filtered = filtered.filter(innovation => innovation.category === activeCategory);
+    if (activeCategory === "All Categories") {
+      return innovations;
+    } else if (activeCategory === "Trending") {
+      return innovations.filter(innovation => innovation.featured);
+    } else {
+      return innovations.filter(innovation => innovation.category === activeCategory);
     }
-
-    // Apply search filter
-    if (searchTerm) {
-      filtered = filtered.filter(innovation =>
-        innovation.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        innovation.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        innovation.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        innovation.category.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    return filtered;
   })();
 
   return (
@@ -144,8 +130,6 @@ const InnovationHubPage = () => {
               <Input 
                 placeholder="Search innovations..." 
                 className="pl-10 glass-card border-border/50"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
@@ -205,56 +189,6 @@ const InnovationHubPage = () => {
               Agriculture
             </Badge>
           </div>
-        </section>
-
-        {/* Top Rated Solution */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-            <Award className="h-6 w-6 text-yellow-500" />
-            Top Rated Solution
-          </h2>
-          <Card className="glass-card p-6 hover:shadow-lg transition-shadow">
-            <div className="flex flex-col md:flex-row gap-6">
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 rounded-full gradient-achievement flex items-center justify-center text-white text-2xl font-bold">
-                  1
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-2">{topRatedSolutions[0].title}</h3>
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10 border border-primary/20">
-                        <AvatarFallback className="bg-primary/10 text-primary text-sm">
-                          {topRatedSolutions[0].author.split(' ').map(n => n[0]).join('')}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="font-semibold">{topRatedSolutions[0].author}</div>
-                        <div className="text-sm text-muted-foreground">{topRatedSolutions[0].school}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-center md:text-right">
-                    <Badge variant="secondary" className="text-sm mb-2">{topRatedSolutions[0].category}</Badge>
-                    <div className="text-3xl font-bold text-primary">{topRatedSolutions[0].votes}</div>
-                    <div className="text-sm text-muted-foreground">votes</div>
-                  </div>
-                </div>
-                <p className="text-muted-foreground mb-4">
-                  {topRatedSolutions[0].description || 'An innovative solution that has received the highest community ratings.'}
-                </p>
-                <div className="flex justify-end">
-                  <Link to={`/solution/${topRatedSolutions[0].id}`}>
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                      View Solution
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </Card>
         </section>
 
         {/* Stats */}
