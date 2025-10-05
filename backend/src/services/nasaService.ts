@@ -13,7 +13,6 @@ class NASAService {
   constructor() {
     this.baseURL = process.env.NASA_API_BASE_URL || 'https://api.nasa.gov';
     this.apiKey = process.env.NASA_API_KEY || 'DEMO_KEY';
-    
     if (!this.apiKey || this.apiKey === 'your_nasa_api_key_here') {
       console.warn('⚠️  Using DEMO_KEY for NASA API. For production, set NASA_API_KEY in environment variables.');
       this.apiKey = 'DEMO_KEY';
@@ -40,6 +39,7 @@ class NASAService {
         validateStatus: (status) => status < 500 // Don't throw for 4xx errors automatically
       });
 
+      
       // Handle rate limit with retries
       if (response.status === 429) {
         if (retries > 0) {

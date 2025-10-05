@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import { nasaRoutes } from './routes/nasa';
 import { missionRoutes } from './routes/mission.routes';
 import { errorHandler } from './middleware/errorHandler';
-import { connectDB, disconnectDB } from './config/database';
+// import { connectDB, disconnectDB } from './config/database';
 
 // Load environment variables
 dotenv.config({ path: '.env' });
@@ -77,10 +77,10 @@ const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   
   // Connect to MongoDB
-  connectDB().catch(err => {
-    console.error('Failed to connect to MongoDB:', err);
-    process.exit(1);
-  });
+  // connectDB().catch(err => {
+  //   console.error('Failed to connect to MongoDB:', err);
+  //   process.exit(1);
+  // });
 });
 
 // Handle unhandled promise rejections
@@ -101,7 +101,7 @@ process.on('uncaughtException', (err: Error) => {
 process.on('SIGTERM', () => {
   console.log('SIGTERM received. Shutting down gracefully');
   server.close(async () => {
-    await disconnectDB();
+    //await disconnectDB();
     console.log('Process terminated');
     process.exit(0);
   });
