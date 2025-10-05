@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -7,27 +7,117 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Pencil, Save, BellRing, BellOff, User, BookOpen, Lightbulb, Users, Settings as SettingsIcon, LogIn, LogOut } from 'lucide-react'; // Icons for edit, save, notifications, and sidebar items
 import { useAuth } from '../context/AuthContext';
+import { useApi } from '../hooks/useAxiosApi'; // Changed import path
 import { useNavigate } from 'react-router-dom';
+
+interface ProfileData {
+  name: string;
+  email: string;
+  schoolUniversity: string;
+  classStreamCourse: string;
+  location: string;
+  gender: string;
+  contactNumber: string;
+  avatarUrl: string;
+  notificationsEnabled: boolean;
+}
+
+interface CommunityData {
+  _id: string;
+  name: string;
+  description: string;
+  members: string[]; // Array of user IDs
+}
 
 const ProfilePage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const { isLoggedIn, login, logout } = useAuth(); // Use AuthContext
+  const { isLoggedIn, userId, logout } = useAuth(); // Removed login from destructuring
   const [selectedSection, setSelectedSection] = useState('details'); // 'details', 'missions', 'solutions', 'communities', 'settings'
-  const navigate = useNavigate();
-  const [profileData, setProfileData] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    schoolUniversity: "Mars University",
-    classStreamCourse: "Astrophysics",
-    location: "Mars Colony 1",
-    gender: "Male",
-    contactNumber: "+1-123-456-7890",
+  const [profileData, setProfileData] = useState<ProfileData>({
+    name: "",
+    email: "",
+    schoolUniversity: "",
+    classStreamCourse: "",
+    location: "",
+    gender: "",
+    contactNumber: "",
     avatarUrl: "https://github.com/shadcn.png", // Placeholder image
+    notificationsEnabled: true,
   });
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [myCommunities, setMyCommunities] = useState<CommunityData[]>([]); // New state for dynamic communities
 
-  const handleEditToggle = () => {
+  const api = useApi();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (userId) {
+        try {
+          const response = await api.get(`/profile/${userId}`);
+          setProfileData({
+            name: response.data.fullName || "",
+            email: response.data.email || "",
+            schoolUniversity: response.data.schoolUniversity || "",
+            classStreamCourse: response.data.classStreamCourse || "",
+            location: response.data.location || "",
+            gender: response.data.gender || "",
+            contactNumber: response.data.contactNumber || "",
+            avatarUrl: response.data.avatarUrl || "https://github.com/shadcn.png",
+            notificationsEnabled: response.data.notificationsEnabled !== undefined ? response.data.notificationsEnabled : true,
+          });
+          setNotificationsEnabled(response.data.notificationsEnabled !== undefined ? response.data.notificationsEnabled : true);
+        } catch (error) {
+          console.error('Error fetching profile data:', error);
+        }
+      }
+    };
+
+    const fetchUserCommunities = async () => {
+      if (userId) {
+        try {
+          const response = await api.get(`/communities/user/${userId}`);
+          setMyCommunities(response.data.map((comm: any) => ({ // Map to CommunityData interface
+            _id: comm._id,
+            name: comm.name,
+            description: comm.description,
+            members: comm.members,
+          })));
+        } catch (error) {
+          console.error('Error fetching user communities:', error);
+        }
+      }
+    };
+
+    fetchProfile();
+    fetchUserCommunities();
+  }, [userId]);
+
+  const handleEditToggle = async () => {
+    if (isEditing) {
+      // If currently editing, save the changes
+      await handleSave();
+    }
     setIsEditing(!isEditing);
+  };
+
+  const handleSave = async () => {
+    if (userId) {
+      try {
+        await api.put(`/profile/${userId}`, {
+          fullName: profileData.name,
+          schoolUniversity: profileData.schoolUniversity,
+          classStreamCourse: profileData.classStreamCourse,
+          location: profileData.location,
+          gender: profileData.gender,
+          contactNumber: profileData.contactNumber,
+          notificationsEnabled: notificationsEnabled,
+        });
+        console.log('Profile updated successfully!');
+      } catch (error) {
+        console.error('Error updating profile:', error);
+      }
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,18 +128,31 @@ const ProfilePage: React.FC = () => {
     }));
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
       const reader = new FileReader();
-      reader.onload = (event) => {
+
+      reader.onload = async (event) => {
         if (event.target && typeof event.target.result === 'string') {
+          const newAvatarUrl = event.target.result as string;
           setProfileData((prevData) => ({
             ...prevData,
-            avatarUrl: event.target?.result as string,
+            avatarUrl: newAvatarUrl,
           }));
+
+          // Upload avatar to backend
+          if (userId) {
+            try {
+              await api.post(`/profile/${userId}/avatar`, { avatarUrl: newAvatarUrl });
+              console.log('Avatar uploaded successfully!');
+            } catch (error) {
+              console.error('Error uploading avatar:', error);
+            }
+          }
         }
       };
-      reader.readAsDataURL(e.target.files[0]);
+      reader.readAsDataURL(file);
     }
   };
 
@@ -62,13 +165,6 @@ const ProfilePage: React.FC = () => {
   const mySolutions = [
     { id: 1, title: "Automated Greenhouse System", votes: 120 },
     { id: 2, title: "Dust Storm Shield Design", votes: 85 },
-  ];
-
-  const myCommunities = [
-    { id: 1, name: "Mars Habitat Designers", members: 1250, role: "Member", description: "A community focused on designing sustainable habitats for Mars colonization" },
-    { id: 2, name: "Water Extraction Innovators", members: 890, role: "Admin", description: "Exploring innovative methods for water extraction on Mars" },
-    { id: 3, name: "Solar Energy Solutions", members: 2100, role: "Member", description: "Developing efficient solar energy systems for Mars missions" },
-    { id: 4, name: "Greenhouse Agriculture", members: 1540, role: "Moderator", description: "Creating sustainable food production systems for Mars colonies" },
   ];
 
   // Remove local handleLogin and handleLogout as they will come from AuthContext
@@ -159,6 +255,7 @@ const ProfilePage: React.FC = () => {
           <div className="space-y-4">
             <h3 className="text-2xl font-semibold text-red-300">My Communities</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+<<<<<<< HEAD
               {myCommunities.map((community) => (
                 <Card key={community.id} className="bg-gray-700/50 border-gray-600 hover:border-red-500 transition-all duration-300">
                   <CardHeader>
@@ -191,6 +288,52 @@ const ProfilePage: React.FC = () => {
                   </CardContent>
                 </Card>
               ))}
+=======
+              {myCommunities.length > 0 ? ( // Check if communities exist
+                myCommunities.map((community) => (
+                  <Card key={community._id} className="bg-gray-700/50 border-gray-600 hover:border-red-500 transition-all duration-300">
+                    <CardHeader>
+                      <CardTitle className="text-xl text-white flex items-center justify-between">
+                        <span>{community.name}</span>
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          // Assuming current user is admin if their ID is the admin ID of the community
+                          community.members.includes(userId || '') ? 'bg-blue-500' : 'bg-gray-500' // Simple check if user is a member
+                        }`}>
+                          {community.members.includes(userId || '') ? 'Member' : 'Not Member'}
+                        </span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-300 text-sm mb-3">{community.description}</p>
+                      <div className="flex items-center gap-2 text-gray-400 text-sm">
+                        <Users className="h-4 w-4" />
+                        <span>{community.members.length.toLocaleString()} members</span>
+                      </div>
+                      <div className="flex gap-2 mt-4">
+                        <Button
+                          onClick={() => navigate(`/chat/${community._id}`)}
+                          className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm"
+                          size="sm"
+                        >
+                          <MessageCircle className="h-4 w-4 mr-2" />
+                          Chat
+                        </Button>
+                        <Button
+                          onClick={() => navigate('/community')}
+                          variant="outline"
+                          className="flex-1 border-gray-600 text-gray-300 hover:bg-gray-700 text-sm"
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <p className="text-gray-400">No communities joined yet.</p>
+              )}
+>>>>>>> 38bf5a140e586e2260685f60aa72e9c456431908
             </div>
           </div>
         );
@@ -271,7 +414,7 @@ const ProfilePage: React.FC = () => {
                   <LogOut className="h-5 w-5 mr-2" /> Logout
                 </Button>
               ) : (
-                <Button onClick={login} className="w-1/2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 mx-auto">
+                <Button onClick={() => navigate('/signin')} className="w-1/2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 mx-auto">
                   <LogIn className="h-5 w-5 mr-2" /> Login
                 </Button>
               )}

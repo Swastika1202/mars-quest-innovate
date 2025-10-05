@@ -5,15 +5,18 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useApi } from '../hooks/useAxiosApi'; // Changed import path
 
 const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  const [error, setError] = useState<string | null>(null); // For error messages
 
   const { login } = useAuth();
   const navigate = useNavigate();
+  const api = useApi(); // Initialize useApi
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -23,12 +26,19 @@ const SignIn: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Sign In Data Submitted:', formData);
-    // Simulate successful login
-    login();
-    navigate('/'); // Redirect to main dashboard
+    setError(null); // Clear previous errors
+
+    try {
+      const response = await api.post('/auth/login', formData);
+      const { token, userId } = response.data;
+      login(token, userId); // Use login from AuthContext with token and userId
+      navigate('/'); // Redirect to main dashboard
+    } catch (err: any) {
+      console.error('Login failed:', err);
+      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
+    }
   };
 
   return (
@@ -47,6 +57,7 @@ const SignIn: React.FC = () => {
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" value={formData.password} onChange={handleChange} required className="bg-gray-700 border-gray-600 text-white" />
             </div>
+            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
             <div className="text-right">
               <Link to="#" className="text-red-400 hover:underline text-sm">
                 Forgot Password?

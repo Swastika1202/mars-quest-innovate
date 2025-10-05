@@ -6,10 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useApi } from '../hooks/useAxiosApi'; // Changed import path
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    username: '', // Changed from name to username
     schoolUniversity: '',
     classStreamCourse: '',
     email: '',
@@ -18,9 +20,13 @@ const SignUp: React.FC = () => {
     gender: '',
     contactNumber: '',
   });
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreviewUrl, setAvatarPreviewUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null); // For error messages
 
   const { login } = useAuth();
   const navigate = useNavigate();
+  const api = useApi(); // Initialize useApi
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
@@ -30,6 +36,19 @@ const SignUp: React.FC = () => {
     }));
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setAvatarFile(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSelectChange = (id: string, value: string) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -37,12 +56,31 @@ const SignUp: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form Data Submitted:', formData);
-    // Simulate successful signup and login
-    login();
-    navigate('/'); // Redirect to main dashboard
+    setError(null); // Clear previous errors
+
+    try {
+      const payload = {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        fullName: formData.username, // Using username as full name for now
+        schoolUniversity: formData.schoolUniversity,
+        classStreamCourse: formData.classStreamCourse,
+        location: formData.location,
+        gender: formData.gender,
+        contactNumber: formData.contactNumber,
+        avatarUrl: avatarPreviewUrl, // Send base64 string or null
+      };
+      const response = await api.post('/auth/register', payload);
+      const { token, userId } = response.data;
+      login(token, userId); // Use login from AuthContext with token and userId
+      navigate('/'); // Redirect to main dashboard
+    } catch (err: any) {
+      console.error('Registration failed:', err);
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    }
   };
 
   return (
@@ -53,10 +91,21 @@ const SignUp: React.FC = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="flex flex-col items-center gap-4 mb-6">
+              <Avatar className="w-24 h-24 border-4 border-red-500">
+                <AvatarImage src={avatarPreviewUrl || "https://github.com/shadcn.png"} alt="Avatar Preview" />
+                <AvatarFallback>{formData.username.charAt(0) || "U"}</AvatarFallback>
+              </Avatar>
+              <div className="w-full max-w-xs">
+                <Label htmlFor="avatar">Profile Picture</Label>
+                <Input id="avatar" type="file" accept="image/*" onChange={handleImageChange} className="bg-gray-700 border-gray-600 text-white file:text-white file:bg-red-600 hover:file:bg-red-700" />
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="name">Full Name</Label>
-                <Input id="name" type="text" value={formData.name} onChange={handleChange} required className="bg-gray-700 border-gray-600 text-white" />
+                <Label htmlFor="username">Full Name</Label>
+                <Input id="username" type="text" value={formData.username} onChange={handleChange} required className="bg-gray-700 border-gray-600 text-white" />
               </div>
               <div>
                 <Label htmlFor="schoolUniversity">School/University</Label>
@@ -106,6 +155,7 @@ const SignUp: React.FC = () => {
                 <Input id="contactNumber" type="tel" value={formData.contactNumber} onChange={handleChange} required className="bg-gray-700 border-gray-600 text-white" />
               </div>
             </div>
+            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
             <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300">
               Sign Up
