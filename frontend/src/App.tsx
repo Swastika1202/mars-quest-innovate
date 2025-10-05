@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -23,7 +23,6 @@ import SolutionDetails from "./pages/SolutionDetails"; // Import SolutionDetails
 import NasaKnowledge from "./pages/NasaKnowledge"; // Import NasaKnowledge page
 import SubmitSolutionPage from "./pages/SubmitSolutionPage";
 import { useState, useEffect } from 'react';
-import { AuthProvider } from "@/context/AuthContext";
 
 const queryClient = new QueryClient();
 
@@ -49,8 +48,8 @@ const App = () => {
           </div>
         ) : (
           <>
-            <AuthProvider>
-              <BrowserRouter>
+            {/* AuthProvider is now in main.tsx */}
+            {/* BrowserRouter is now in main.tsx */}
                 <Navbar />
                 <div className="animate-slide-in-from-top-fade-in"> {/* Add padding-top for fixed navbar */}
                   <Routes>
@@ -77,8 +76,8 @@ const App = () => {
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </div>
-              </BrowserRouter>
-            </AuthProvider>
+              {/* Removed BrowserRouter */}
+            {/* AuthProvider is now in main.tsx */}
           </>
         )}
       </TooltipProvider>

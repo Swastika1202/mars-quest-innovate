@@ -6,8 +6,11 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { nasaRoutes } from './routes/nasa';
 import { missionRoutes } from './routes/mission.routes';
+import profileRoutes from './routes/profile.routes'; // Import profile routes
+import authRoutes from './routes/auth.routes'; // Import auth routes
+import communityRoutes from './routes/community.routes'; // Import community routes
 import { errorHandler } from './middleware/errorHandler';
-// import { connectDB, disconnectDB } from './config/database';
+import { connectDB, disconnectDB } from './config/database'; // Uncommented database imports
 
 // Load environment variables
 dotenv.config({ path: '.env' });
@@ -45,12 +48,15 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' })); // Increased payload limit
+app.use(express.urlencoded({ extended: true, limit: '50mb' })); // Increased payload limit
 
 // Routes
 app.use('/api/nasa', nasaRoutes);
 app.use('/api/missions', missionRoutes);
+app.use('/api/profile', profileRoutes); // Use profile routes
+app.use('/api/auth', authRoutes); // Use auth routes
+app.use('/api/communities', communityRoutes); // Use community routes
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -77,10 +83,10 @@ const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   
   // Connect to MongoDB
-  // connectDB().catch(err => {
-  //   console.error('Failed to connect to MongoDB:', err);
-  //   process.exit(1);
-  // });
+  connectDB().catch(err => { // Uncommented connectDB
+    console.error('Failed to connect to MongoDB:', err);
+    process.exit(1);
+  });
 });
 
 // Handle unhandled promise rejections
@@ -101,7 +107,7 @@ process.on('uncaughtException', (err: Error) => {
 process.on('SIGTERM', () => {
   console.log('SIGTERM received. Shutting down gracefully');
   server.close(async () => {
-    //await disconnectDB();
+    await disconnectDB(); // Uncommented disconnectDB
     console.log('Process terminated');
     process.exit(0);
   });

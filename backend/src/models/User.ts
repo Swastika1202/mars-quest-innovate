@@ -5,6 +5,15 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role: 'user' | 'admin';
+  fullName?: string;
+  schoolUniversity?: string;
+  classStreamCourse?: string;
+  location?: string;
+  gender?: string;
+  contactNumber?: string;
+  avatarUrl?: string;
+  notificationsEnabled?: boolean;
+  communities?: Schema.Types.ObjectId[]; // Added communities field
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,7 +45,45 @@ const userSchema = new Schema<IUser>(
       type: String,
       enum: ['user', 'admin'],
       default: 'user'
-    }
+    },
+    fullName: {
+      type: String,
+      trim: true,
+    },
+    schoolUniversity: {
+      type: String,
+      trim: true,
+    },
+    classStreamCourse: {
+      type: String,
+      trim: true,
+    },
+    location: {
+      type: String,
+      trim: true,
+    },
+    gender: {
+      type: String,
+      trim: true,
+    },
+    contactNumber: {
+      type: String,
+      trim: true,
+    },
+    avatarUrl: {
+      type: String,
+      default: "https://github.com/shadcn.png",
+    },
+    notificationsEnabled: {
+      type: Boolean,
+      default: true,
+    },
+    communities: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Community',
+      },
+    ],
   },
   {
     timestamps: true
