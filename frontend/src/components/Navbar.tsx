@@ -1,8 +1,7 @@
-import React, { useState, FC } from "react";
+import { useState, FC } from "react";
 import { Link } from "react-router-dom";
-import { FaBars, FaTimes, FaRocket, FaInfoCircle, FaHome, FaMoon, FaGraduationCap, FaUsers, FaPlay } from "react-icons/fa";
+import { FaBars, FaTimes, FaRocket, FaGraduationCap } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
-import GuidedTour from "./GuidedTour";
 
 interface MenuItem {
   name: string;
@@ -12,15 +11,9 @@ interface MenuItem {
 
 const Navbar: FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
-  };
-
-  const startTour = () => {
-    setIsTourOpen(true);
-    setIsOpen(false);
   };
 
   const { isLoggedIn } = useAuth();
@@ -125,9 +118,6 @@ const Navbar: FC = () => {
           </div>
         </div>
       )}
-      
-      {/* Guided Tour */}
-      <GuidedTour isOpen={isTourOpen} onClose={() => setIsTourOpen(false)} />
     </nav>
   );
 };

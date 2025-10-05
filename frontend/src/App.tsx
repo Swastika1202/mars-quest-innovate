@@ -12,7 +12,6 @@ import SolarFarm from "./pages/SolarFarm";
 import Greenhouse from "./pages/Greenhouse";
 import StartMission from "./pages/StartMission";
 import InnovationHubPage from "./pages/InnovationHub";
-import StudentSolutions from "./pages/StudentSolutions";
 import Achievements from "./pages/Achievements";
 import Leaderboard from "./pages/Leaderboard";
 import LearningPage from "./pages/LearningPage";
@@ -22,9 +21,9 @@ import ProfilePage from "./pages/ProfilePage";
 import CommunityPage from "./pages/CommunityPage"; // Import CommunityPage
 import SolutionDetails from "./pages/SolutionDetails"; // Import SolutionDetails page
 import NasaKnowledge from "./pages/NasaKnowledge"; // Import NasaKnowledge page
-import { AuthProvider } from "./context/AuthContext";
-import { useState, useEffect } from 'react';
 import SubmitSolutionPage from "./pages/SubmitSolutionPage";
+import { useState, useEffect } from 'react';
+import { AuthProvider } from "@/context/AuthContext";
 
 const queryClient = new QueryClient();
 
@@ -66,7 +65,6 @@ const App = () => {
                     <Route path="/greenhouse" element={<Greenhouse />} />
                     <Route path="/start-mission" element={<StartMission />} />
                     <Route path="/innovation-hub" element={<InnovationHubPage />} />
-                    <Route path="/student-solutions" element={<StudentSolutions />} />
                     <Route path="/achievements" element={<Achievements />} />
                     <Route path="/leaderboard" element={<Leaderboard />} />
                     <Route path="/learn-about-mars" element={<LearningPage />} />

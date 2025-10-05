@@ -3,7 +3,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Lightbulb, ThumbsUp, MessageCircle, Star, Search, TrendingUp } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft, Lightbulb, ThumbsUp, MessageCircle, Star, Search, TrendingUp, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 
@@ -74,6 +75,14 @@ const innovations = [
     description: "Process to create durable building materials from compressed Martian regolith using minimal energy.",
     featured: false,
   },
+];
+
+const topRatedSolutions = [
+  { id: "1", author: "Emma Zhang", school: "MIT", title: "AI-Powered Habitat Design", votes: 2341, category: "Habitat" },
+  { id: "2", author: "Lucas Silva", school: "Stanford", title: "Quantum Water Filter", votes: 2198, category: "Water" },
+  { id: "3", author: "Aisha Patel", school: "Caltech", title: "Self-Repairing Solar Cells", votes: 2087, category: "Energy" },
+  { id: "4", author: "Jordan Lee", school: "UC Berkeley", title: "Vertical Farming Tower", votes: 1956, category: "Agriculture" },
+  { id: "5", author: "Sofia Rossi", school: "ETH Zurich", title: "Regolith 3D Printer", votes: 1834, category: "Construction" },
 ];
 
 const InnovationHubPage = () => {
@@ -182,6 +191,56 @@ const InnovationHubPage = () => {
           </div>
         </section>
 
+        {/* Top Rated Solution */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            <Award className="h-6 w-6 text-yellow-500" />
+            Top Rated Solution
+          </h2>
+          <Card className="glass-card p-6 hover:shadow-lg transition-shadow">
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex-shrink-0">
+                <div className="w-16 h-16 rounded-full gradient-achievement flex items-center justify-center text-white text-2xl font-bold">
+                  1
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+                  <div>
+                    <h3 className="text-2xl font-bold mb-2">{topRatedSolutions[0].title}</h3>
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-10 w-10 border border-primary/20">
+                        <AvatarFallback className="bg-primary/10 text-primary text-sm">
+                          {topRatedSolutions[0].author.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="font-semibold">{topRatedSolutions[0].author}</div>
+                        <div className="text-sm text-muted-foreground">{topRatedSolutions[0].school}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-center md:text-right">
+                    <Badge variant="secondary" className="text-sm mb-2">{topRatedSolutions[0].category}</Badge>
+                    <div className="text-3xl font-bold text-primary">{topRatedSolutions[0].votes}</div>
+                    <div className="text-sm text-muted-foreground">votes</div>
+                  </div>
+                </div>
+                <p className="text-muted-foreground mb-4">
+                  {topRatedSolutions[0].description || 'An innovative solution that has received the highest community ratings.'}
+                </p>
+                <div className="flex justify-end">
+                  <Link to={`/solution/${topRatedSolutions[0].id}`}>
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                      View Solution
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </section>
+
         {/* Stats */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
           <Card className="glass-card p-6 text-center">
@@ -198,70 +257,137 @@ const InnovationHubPage = () => {
           </Card>
         </section>
 
-        {/* Innovations Grid */}
-        <section className="mb-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              {activeCategory === "Trending" && <TrendingUp className="h-6 w-6 text-primary" />}
-              {activeCategory === "All Categories"
-                ? "All Solutions"
-                : activeCategory === "Trending"
-                ? "Trending Solutions"
-                : `${activeCategory} Solutions`}
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredInnovations.map((innovation) => (
-              <Card key={innovation.id} className="glass-card p-6 hover:scale-105 transition-all group">
-                <div className="flex items-start justify-between mb-4">
-                  <Badge className="bg-accent/20 text-accent border-accent/30 border">
-                    {innovation.category}
-                  </Badge>
-                  {innovation.featured && (
-                    <div className="flex items-center gap-1 text-accent">
-                      <Star className="h-4 w-4 fill-current" />
-                      <span className="text-xs font-semibold">Featured</span>
+        {/* Tabs for All Solutions and Top Rated */}
+        <Tabs defaultValue="all" className="mb-12">
+          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
+            <TabsTrigger value="all">All Solutions</TabsTrigger>
+            <TabsTrigger value="top" className="flex items-center gap-2">
+              <Award className="h-4 w-4" />
+              Top Rated
+            </TabsTrigger>
+          </TabsList>
+
+          {/* All Solutions Tab */}
+          <TabsContent value="all">
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold flex items-center gap-2">
+                  {activeCategory === "Trending" && <TrendingUp className="h-6 w-6 text-primary" />}
+                  {activeCategory === "All Categories"
+                    ? "All Solutions"
+                    : activeCategory === "Trending"
+                    ? "Trending Solutions"
+                    : `${activeCategory} Solutions`}
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredInnovations.map((innovation) => (
+                  <Card key={innovation.id} className="glass-card p-6 hover:scale-105 transition-all group">
+                    <div className="flex items-start justify-between mb-4">
+                      <Badge className="bg-accent/20 text-accent border-accent/30 border">
+                        {innovation.category}
+                      </Badge>
+                      {innovation.featured && (
+                        <div className="flex items-center gap-1 text-accent">
+                          <Star className="h-4 w-4 fill-current" />
+                          <span className="text-xs font-semibold">Featured</span>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                <h3 className="text-lg font-bold mb-3 group-hover:text-primary transition-colors">
-                  {innovation.title}
-                </h3>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                  {innovation.description}
-                </p>
-                <div className="flex items-center gap-3 mb-4">
-                  <Avatar className="h-8 w-8 border border-primary/20">
-                    <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                      {innovation.author.split(' ').map(n => n[0]).join('')}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold truncate">{innovation.author}</div>
-                    <div className="text-xs text-muted-foreground">{innovation.school}</div>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between pt-4 border-t border-border">
-                  <div className="flex items-center gap-4">
-                    <button className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
-                      <ThumbsUp className="h-4 w-4" />
-                      <span className="text-sm font-medium">{innovation.votes}</span>
-                    </button>
-                    <button className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
-                      <MessageCircle className="h-4 w-4" />
-                      <span className="text-sm font-medium">{innovation.comments}</span>
-                    </button>
-                  </div>
-                  <Link to={`/solution/${innovation.id}`}>
-                    <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
-                      View
-                    </Button>
-                  </Link>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </section>
+                    <h3 className="text-lg font-bold mb-3 group-hover:text-primary transition-colors">
+                      {innovation.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                      {innovation.description}
+                    </p>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Avatar className="h-8 w-8 border border-primary/20">
+                        <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                          {innovation.author.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-semibold truncate">{innovation.author}</div>
+                        <div className="text-xs text-muted-foreground">{innovation.school}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between pt-4 border-t border-border">
+                      <div className="flex items-center gap-4">
+                        <button className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
+                          <ThumbsUp className="h-4 w-4" />
+                          <span className="text-sm font-medium">{innovation.votes}</span>
+                        </button>
+                        <button className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
+                          <MessageCircle className="h-4 w-4" />
+                          <span className="text-sm font-medium">{innovation.comments}</span>
+                        </button>
+                      </div>
+                      <Link to={`/solution/${innovation.id}`}>
+                        <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
+                          View
+                        </Button>
+                      </Link>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </section>
+          </TabsContent>
+
+          {/* Top Rated Tab */}
+          <TabsContent value="top">
+            <section>
+              <h2 className="text-2xl font-bold mb-6">Top Rated Student Solutions</h2>
+              <div className="space-y-4 max-w-4xl mx-auto">
+                {topRatedSolutions.map((solution, idx) => (
+                  <Card key={solution.id} className="glass-card p-6 hover:scale-[1.02] transition-all">
+                    <div className="flex items-start gap-4">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0 ${
+                        idx === 0 ? 'gradient-achievement text-white' :
+                        idx === 1 ? 'bg-gray-400 text-white' :
+                        idx === 2 ? 'bg-orange-600 text-white' :
+                        'bg-muted text-foreground'
+                      }`}>
+                        {idx + 1}
+                      </div>
+
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <h3 className="text-xl font-bold mb-2">{solution.title}</h3>
+                            <div className="flex items-center gap-3">
+                              <Avatar className="h-8 w-8 border border-primary/20">
+                                <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                                  {solution.author.split(' ').map(n => n[0]).join('')}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <div className="text-sm font-semibold">{solution.author}</div>
+                                <div className="text-xs text-muted-foreground">{solution.school}</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <Badge className="mb-2">{solution.category}</Badge>
+                            <div className="text-2xl font-bold text-primary">{solution.votes}</div>
+                            <div className="text-xs text-muted-foreground">votes</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-4 text-center">
+                      <Link to={`/solution/${solution.id}`}>
+                        <Button size="sm" variant="secondary" className="bg-blue-600 hover:bg-blue-700 text-white">
+                          View Solution
+                        </Button>
+                      </Link>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </section>
+          </TabsContent>
+        </Tabs>
 
 
         {/* Submit CTA */}

@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Rocket, Users, Trophy } from "lucide-react";
+import { Rocket, Users } from "lucide-react";
 import marsHero from "@/assets/mars-hero.jpg";
-import { Link } from "react-router-dom"; // Import Link
+import { Link } from "react-router-dom";
 
 export const Hero = () => {
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden hero-section">
       {/* Background Image */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${marsHero})` }}
       >
@@ -24,22 +24,22 @@ export const Hero = () => {
             Student Innovation Hub for Mars Settlement
           </p>
         </div>
-        
+
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-12 leading-relaxed">
-          Join thousands of students using real NASA Mars data to solve humanity's greatest challenge: 
+          Join thousands of students using real NASA Mars data to solve humanity's greatest challenge:
           building sustainable habitats on the Red Planet. Complete missions, innovate solutions, and shape the future of space exploration.
         </p>
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-          <Link to="/start-mission"> {/* Wrap Button with Link */}
-            <Button size="lg" className="gradient-mars text-white font-semibold px-8 py-6 text-lg">
+          <Link to="/start-mission">
+            <Button size="lg" className="gradient-mars text-white font-semibold px-8 py-6 text-lg hero-start-mission">
               <Rocket className="mr-2 h-5 w-5" />
               Start Your Mission
             </Button>
           </Link>
-          <Link to="/community"> {/* Wrap Button with Link */}
-            <Button size="lg" variant="outline" className="border-2 border-primary/50 hover:bg-primary/10 px-8 py-6 text-lg">
+          <Link to="/community">
+            <Button size="lg" variant="outline" className="border-2 border-primary/50 hover:bg-primary/10 px-8 py-6 text-lg hero-join-hub">
               <Users className="mr-2 h-5 w-5" />
               Join Innovation Hub
             </Button>

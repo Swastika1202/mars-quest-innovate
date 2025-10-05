@@ -129,7 +129,7 @@ export const MissionDashboard = () => {
 
   // Main content
   return (
-    <section className="py-20 px-4">
+    <section className="py-20 px-4 mission-dashboard">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full glass-card">

@@ -131,7 +131,7 @@ const SolutionDetails: React.FC = () => {
           </CardHeader>
           <CardContent className="text-center">
             <p className="text-lg text-gray-300 mb-6">The solution you are looking for does not exist.</p>
-            <Link to="/student-solutions">
+            <Link to="/innovation-hub">
               <Button className="bg-red-600 hover:bg-red-700">Back to Solutions</Button>
             </Link>
           </CardContent>
@@ -144,7 +144,7 @@ const SolutionDetails: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-red-900 text-white p-4">
       <header className="border-b border-border/50 bg-background/80 backdrop-blur-sm sticky top-0 z-50 mb-6">
         <div className="container mx-auto px-4 py-4">
-          <Link to="/student-solutions">
+          <Link to="/innovation-hub">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Solutions

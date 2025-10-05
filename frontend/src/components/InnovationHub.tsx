@@ -37,7 +37,7 @@ const innovations = [
 
 export const InnovationHub = () => {
   return (
-    <section className="py-20 px-4">
+    <section className="py-20 px-4 innovation-hub">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full glass-card">
