@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
-import { Users, Lightbulb, Zap, Plus, Search } from 'lucide-react';
+import { Users, Lightbulb, Plus, Search } from 'lucide-react';
 
 interface Community {
   id: number;
@@ -51,6 +51,7 @@ const CommunityPage: React.FC = () => {
   const [newCommunityName, setNewCommunityName] = useState('');
   const [newCommunityChallenge, setNewCommunityChallenge] = useState('');
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [joinedCommunities, setJoinedCommunities] = useState<number[]>([]);
 
   const filteredCommunities = communities.filter(community =>
     community.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -74,11 +75,16 @@ const CommunityPage: React.FC = () => {
   };
 
   const handleJoinCommunity = (id: number) => {
-    setCommunities(communities.map(community =>
-      community.id === id ? { ...community, members: community.members + 1 } : community
-    ));
-    console.log(`Joined community with id: ${id}`);
+    if (!joinedCommunities.includes(id)) {
+      setJoinedCommunities([...joinedCommunities, id]);
+      setCommunities(communities.map(community =>
+        community.id === id ? { ...community, members: community.members + 1 } : community
+      ));
+      console.log(`Joined community with id: ${id}`);
+    }
   };
+
+  const isCommunityJoined = (id: number) => joinedCommunities.includes(id);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-red-900 text-white p-4">
@@ -155,8 +161,16 @@ const CommunityPage: React.FC = () => {
                     <span className="flex items-center gap-1"><Users className="h-4 w-4" /> {community.members} Members</span>
                     <span className="flex items-center gap-1"><Lightbulb className="h-4 w-4" /> {community.solutions} Solutions</span>
                   </div>
-                  <Button onClick={() => handleJoinCommunity(community.id)} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                    Join Community
+                  <Button
+                    onClick={() => handleJoinCommunity(community.id)}
+                    disabled={isCommunityJoined(community.id)}
+                    className={`w-full ${
+                      isCommunityJoined(community.id)
+                        ? 'bg-gray-600 hover:bg-gray-600 text-gray-400 cursor-not-allowed'
+                        : 'bg-blue-600 hover:bg-blue-700 text-white'
+                    }`}
+                  >
+                    {isCommunityJoined(community.id) ? 'You are already joined' : 'Join Community'}
                   </Button>
                 </Card>
               ))
