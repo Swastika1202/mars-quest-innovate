@@ -1,8 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { nasaApi, MarsPhoto } from '@/services/api';
 
 interface Chapter {
   title: string;
@@ -39,16 +40,11 @@ const chapters: Chapter[] = [
     animation: "Dust storm animation"
   },
   {
-    title: "The Challenge: Surviving My Surface",
+    title: "Mars Survival Story",
     narration: "Living here isn't easy! Besides the cold and thin air, there's radiation and perchlorate in my soil. But don't worry, we can overcome these!",
     type: "challenge",
-    animation: "Survival challenges visualization"
-  },
-  {
-    title: "Building Our First Home: The Dome",
-    narration: "To survive, we need shelter. Imagine building sturdy domes, protecting us from the harsh environment.",
-    type: "habitat",
-    animation: "Dome habitat animation"
+    animation: "Complete Mars survival story",
+    badge: "Survival Expert Badge"
   },
   {
     title: "Growing Our Food: The Greenhouse",
@@ -75,7 +71,21 @@ const chapters: Chapter[] = [
 
 const LearningPage: React.FC = () => {
   const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
+  const [marsImage, setMarsImage] = useState<MarsPhoto | null>(null);
   const currentChapter = chapters[currentChapterIndex];
+
+  // Fetch Mars image when component mounts
+  useEffect(() => {
+    const fetchMarsImage = async () => {
+      try {
+        const image = await nasaApi.getRandomPhoto();
+        setMarsImage(image);
+      } catch (error) {
+        console.error('Failed to fetch Mars image:', error);
+      }
+    };
+    fetchMarsImage();
+  }, []);
 
   const handleNext = () => {
     if (currentChapterIndex < chapters.length - 1) {
@@ -116,14 +126,80 @@ const LearningPage: React.FC = () => {
               )}
             </div>
 
-            <div className="flex-1 flex items-center justify-center min-h-[200px] bg-gray-700/50 rounded-lg p-4">
-              {/* Placeholder for animation */}
-              <p className="text-gray-400 text-center text-xl">
-                {currentChapter.type === 'climate' && 'Weather Animation Placeholder: '}
-                {currentChapter.type === 'habitat' && 'Habitat Animation Placeholder: '}
-                {currentChapter.type === 'challenge' && 'Challenge Visualization Placeholder: '}
-                {currentChapter.animation}
-              </p>
+            <div className="flex-1 flex items-center justify-center h-[400px] bg-gray-700/50 rounded-lg p-4 relative overflow-hidden">
+              {/* Animation Area */}
+              <div className="relative w-full h-full flex items-center justify-center">
+                {/* Welcome to Mars - Chapter 1 */}
+                {currentChapterIndex === 0 && (
+                  <div className="welcome-animation">
+                    <div className="space-background">
+                      <div className="star star-1"></div>
+                      <div className="star star-2"></div>
+                      <div className="star star-3"></div>
+                      <div className="star star-4"></div>
+                      <div className="star star-5"></div>
+                    </div>
+                    <div className="mars-planet">
+                      <div className="planet-core"></div>
+                      <div className="planet-surface"></div>
+                      <div className="welcome-text animate-pulse">🚀</div>
+                    </div>
+                    <div className="mars-glow-ring"></div>
+                  </div>
+                )}
+
+                {/* Cold Climate - Chapter 2 */}
+                {currentChapterIndex === 1 && (
+                  <div className="cold-climate-animation">
+                  </div>
+                )}
+                {/* Thin Atmosphere - Chapter 3 */}
+                {currentChapterIndex === 2 && (
+                  <div className="atmosphere-animation">
+                  </div>
+                )}
+
+                {/* Dust Storms - Chapter 4 */}
+                {currentChapterIndex === 3 && (
+                  <div className="dust-storm-animation">
+                  </div>
+                )}
+
+                {/* Survival Challenge - Chapter 5 */}
+                {currentChapterIndex === 4 && (
+                  <div className="survival-animation">
+                  </div>
+                )}
+
+                {/* Mars Survival Story - Chapter 6 */}
+                {currentChapterIndex === 5 && (
+                  <div className="mars-survival-story">
+                  </div>
+                )}
+
+                {/* Greenhouse - Chapter 7 */}
+                {currentChapterIndex === 6 && (
+                  <div className="greenhouse-animation">
+                  </div>
+                )}
+
+                {/* Solar Panels - Chapter 8 */}
+                {currentChapterIndex === 7 && (
+                  <div className="solar-animation">
+                  </div>
+                )}
+
+                {/* Final Chapter - Chapter 9 */}
+                {currentChapterIndex === 8 && (
+                  <div className="future-animation">
+                  </div>
+                )}
+
+                {/* Animation Description */}
+                <div className="absolute bottom-2 left-2 text-xs text-gray-400 opacity-70">
+                  {currentChapter.animation}
+                </div>
+              </div>
             </div>
           </div>
 

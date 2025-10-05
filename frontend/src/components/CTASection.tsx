@@ -32,9 +32,6 @@ export const CTASection = () => {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="border-2 border-primary/50 hover:bg-primary/10 px-8 py-6 text-lg">
-                Watch Demo
-              </Button>
             </div>
 
             <div className="mt-8 flex items-center justify-center gap-6 text-sm text-muted-foreground">
