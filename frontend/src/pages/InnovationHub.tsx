@@ -87,15 +87,29 @@ const topRatedSolutions = [
 
 const InnovationHubPage = () => {
   const [activeCategory, setActiveCategory] = useState("All Categories");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredInnovations = (() => {
-    if (activeCategory === "All Categories") {
-      return innovations;
-    } else if (activeCategory === "Trending") {
-      return innovations.filter(innovation => innovation.featured);
-    } else {
-      return innovations.filter(innovation => innovation.category === activeCategory);
+    let filtered = innovations;
+
+    // Apply category filter
+    if (activeCategory === "Trending") {
+      filtered = filtered.filter(innovation => innovation.featured);
+    } else if (activeCategory !== "All Categories") {
+      filtered = filtered.filter(innovation => innovation.category === activeCategory);
     }
+
+    // Apply search filter
+    if (searchTerm) {
+      filtered = filtered.filter(innovation =>
+        innovation.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        innovation.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        innovation.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        innovation.category.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    return filtered;
   })();
 
   return (
@@ -130,6 +144,8 @@ const InnovationHubPage = () => {
               <Input 
                 placeholder="Search innovations..." 
                 className="pl-10 glass-card border-border/50"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
