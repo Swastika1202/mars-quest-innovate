@@ -4,8 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
-import { Users, Lightbulb, Plus, Search, MessageCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Users, Lightbulb, Plus, Search } from 'lucide-react';
 
 interface Community {
   id: number;
@@ -53,7 +52,6 @@ const CommunityPage: React.FC = () => {
   const [newCommunityChallenge, setNewCommunityChallenge] = useState('');
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [joinedCommunities, setJoinedCommunities] = useState<number[]>([]);
-  const navigate = useNavigate();
 
   const filteredCommunities = communities.filter(community =>
     community.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -174,15 +172,6 @@ const CommunityPage: React.FC = () => {
                   >
                     {isCommunityJoined(community.id) ? 'You are already joined' : 'Join Community'}
                   </Button>
-                  {isCommunityJoined(community.id) && (
-                    <Button
-                      onClick={() => navigate(`/chat/${community.id}`)}
-                      className="w-full bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
-                    >
-                      <MessageCircle className="h-4 w-4" />
-                      Chat with Community
-                    </Button>
-                  )}
                 </Card>
               ))
             ) : (

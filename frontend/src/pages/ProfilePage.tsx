@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import { Pencil, Save, BellRing, BellOff, User, BookOpen, Lightbulb, Users, Settings as SettingsIcon, LogIn, LogOut, MessageCircle } from 'lucide-react'; // Icons for edit, save, notifications, and sidebar items
+import { Pencil, Save, BellRing, BellOff, User, BookOpen, Lightbulb, Users, Settings as SettingsIcon, LogIn, LogOut } from 'lucide-react'; // Icons for edit, save, notifications, and sidebar items
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -181,20 +181,11 @@ const ProfilePage: React.FC = () => {
                     </div>
                     <div className="flex gap-2">
                       <Button
-                        onClick={() => navigate(`/chat/${community.id}`)}
-                        className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm"
-                        size="sm"
-                      >
-                        <MessageCircle className="h-4 w-4 mr-2" />
-                        Chat
-                      </Button>
-                      <Button
                         onClick={() => navigate('/community')}
-                        variant="outline"
-                        className="flex-1 border-gray-600 text-gray-300 hover:bg-gray-700 text-sm"
+                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm"
                         size="sm"
                       >
-                        View
+                        View Community
                       </Button>
                     </div>
                   </CardContent>
