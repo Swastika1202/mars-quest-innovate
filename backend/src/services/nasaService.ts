@@ -12,26 +12,67 @@ class NASAService {
 
   constructor() {
     this.baseURL = process.env.NASA_API_BASE_URL || 'https://api.nasa.gov';
-    this.apiKey = process.env.NASA_API_KEY || '';
+    this.apiKey = process.env.NASA_API_KEY || 'DEMO_KEY';
     
-    if (!this.apiKey) {
-      console.warn('⚠️  NASA_API_KEY not found in environment variables');
+    if (!this.apiKey || this.apiKey === 'your_nasa_api_key_here') {
+      console.warn('⚠️  Using DEMO_KEY for NASA API. For production, set NASA_API_KEY in environment variables.');
+      this.apiKey = 'DEMO_KEY';
     }
   }
 
-  private async makeRequest<T>(endpoint: string, params: Record<string, any> = {}): Promise<T> {
+  // Helper delay function for retries
+  private delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private async makeRequest<T>(endpoint: string, params: Record<string, any> = {}, retries = 3): Promise<T> {
+    if (!this.apiKey) {
+      throw new Error('NASA API key is not configured');
+    }
+
     try {
       const response: AxiosResponse<T> = await axios.get(`${this.baseURL}${endpoint}`, {
         params: {
           ...params,
           api_key: this.apiKey
         },
-        timeout: 10000 // 10 second timeout
+        timeout: 10000, // 10 second timeout
+        validateStatus: (status) => status < 500 // Don't throw for 4xx errors automatically
       });
+
+      // Handle rate limit with retries
+      if (response.status === 429) {
+        if (retries > 0) {
+          console.warn(`NASA API rate limit hit for ${endpoint}. Retrying after delay... Retries left: ${retries}`);
+          await this.delay(1000 * (4 - retries));  // Exponential backoff
+          return this.makeRequest(endpoint, params, retries - 1);
+        } else {
+          throw new Error('NASA API rate limit exceeded. Please try again later.');
+        }
+      }
+
+      if (response.status === 403) {
+        throw new Error('Invalid or missing NASA API key');
+      }
+      if (response.status === 404) {
+        throw new Error('Requested resource not found');
+      }
+      if (response.status >= 400) {
+        throw new Error(`NASA API returned status ${response.status}`);
+      }
+
       return response.data;
-    } catch (error) {
-      console.error(`NASA API Error for ${endpoint}:`, error);
-      throw new Error(`Failed to fetch data from NASA API: ${endpoint}`);
+    } catch (error: any) {
+      console.error(`NASA API Error for ${endpoint}:`, error.message);
+
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        console.error('Status code:', error.response.status);
+      } else if (error.request) {
+        console.error('No response received from NASA API');
+      }
+
+      throw new Error(`NASA API request failed: ${error.message}`);
     }
   }
 

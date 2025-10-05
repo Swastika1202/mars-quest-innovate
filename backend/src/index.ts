@@ -1,14 +1,25 @@
+import 'express-async-errors';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { nasaRoutes } from './routes/nasa';
-import { missionRoutes } from './routes/missions';
+import { missionRoutes } from './routes/mission.routes';
 import { errorHandler } from './middleware/errorHandler';
+import { connectDB, disconnectDB } from './config/database';
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: '.env' });
+
+// Validate required environment variables
+const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET'];
+const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+if (missingVars.length > 0) {
+  console.error(`Missing required environment variables: ${missingVars.join(', ')}`);
+  process.exit(1);
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -16,9 +27,23 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(helmet()); // Security headers
 app.use(morgan('combined')); // Logging
+// Configure CORS with multiple allowed origins
+const allowedOrigins = process.env.FRONTEND_URLS?.split(',') || ['http://localhost:3000', 'http://localhost:5173'];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-  credentials: true
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -47,10 +72,38 @@ app.use((req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Mars Quest Backend API running on port ${PORT}`);
-  console.log(`📡 NASA API integration ready`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+// Start server
+const server = app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+  
+  // Connect to MongoDB
+  connectDB().catch(err => {
+    console.error('Failed to connect to MongoDB:', err);
+    process.exit(1);
+  });
 });
 
-export default app;
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err: Error) => {
+  console.error('Unhandled Rejection:', err);
+  // Close server & exit process
+  server.close(() => process.exit(1));
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err: Error) => {
+  console.error('Uncaught Exception:', err);
+  // Close server & exit process
+  server.close(() => process.exit(1));
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received. Shutting down gracefully');
+  server.close(async () => {
+    await disconnectDB();
+    console.log('Process terminated');
+    process.exit(0);
+  });
+});
+

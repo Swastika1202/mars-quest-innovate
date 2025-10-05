@@ -11,15 +11,33 @@ router.get('/mars-photos', async (req: Request, res: Response) => {
       sol, 
       earth_date, 
       camera, 
-      page = 1 
+      page = '1'
     } = req.query;
+
+    // Validate rover name
+    const validRovers = ['curiosity', 'opportunity', 'spirit', 'perseverance'];
+    if (!validRovers.includes(rover as string)) {
+      return res.status(400).json({
+        success: false,
+        error: `Invalid rover name. Must be one of: ${validRovers.join(', ')}`
+      });
+    }
+
+    // Validate page number
+    const pageNum = parseInt(page as string);
+    if (isNaN(pageNum) || pageNum < 1) {
+      return res.status(400).json({
+        success: false,
+        error: 'Page must be a positive number'
+      });
+    }
 
     const photos = await nasaService.getMarsPhotos(
       rover as string,
       sol ? parseInt(sol as string) : undefined,
       earth_date as string,
       camera as string,
-      parseInt(page as string)
+      pageNum
     );
 
     res.json({
@@ -27,16 +45,22 @@ router.get('/mars-photos', async (req: Request, res: Response) => {
       data: photos,
       meta: {
         rover,
-        sol,
+        sol: sol ? parseInt(sol as string) : undefined,
         earth_date,
         camera,
-        page: parseInt(page as string)
+        page: pageNum
       }
     });
-  } catch (error) {
-    res.status(500).json({
+  } catch (error: unknown) {
+    const err = error as Error;
+    const statusCode = err.message.includes('Invalid') || 
+                       err.message.includes('missing') ? 400 : 500;
+
+    console.error('Mars photos error:', err);
+    res.status(statusCode).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch Mars photos'
+      error: err.message,
+      details: process.env.NODE_ENV === 'development' ? err : undefined
     });
   }
 });
@@ -54,10 +78,11 @@ router.get('/mars-weather', async (req: Request, res: Response) => {
         lastUpdated: new Date().toISOString()
       }
     });
-  } catch (error) {
+  } catch (error: unknown) {
+    const err = error as Error;
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch Mars weather data'
+      error: err.message
     });
   }
 });
@@ -80,10 +105,11 @@ router.get('/apod', async (req: Request, res: Response) => {
         hd: hd === 'true'
       }
     });
-  } catch (error) {
+  } catch (error: unknown) {
+    const err = error as Error;
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch APOD data'
+      error: err.message
     });
   }
 });
@@ -102,10 +128,11 @@ router.get('/rover-manifest/:rover', async (req: Request, res: Response) => {
         lastUpdated: new Date().toISOString()
       }
     });
-  } catch (error) {
+  } catch (error: unknown) {
+    const err = error as Error;
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch rover manifest'
+      error: err.message
     });
   }
 });
@@ -151,10 +178,11 @@ router.get('/random-photo', async (req: Request, res: Response) => {
         generatedAt: new Date().toISOString()
       }
     });
-  } catch (error) {
+  } catch (error: unknown) {
+    const err = error as Error;
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch random Mars photo'
+      error: err.message
     });
   }
 });

@@ -1,103 +1,117 @@
- Mars Quest Backend API
+# Mars Quest Innovate
 
-A Node.js/Express backend API that integrates with NASA's official APIs to provide Mars mission data for the Mars Quest educational platform.
+A full-stack educational platform that provides Mars mission data through a modern web application. The project is structured as a monorepo with separate frontend and backend services.
 
 ## 🚀 Features
 
-- **NASA API Integration**: Real-time Mars data from official NASA APIs
-- **Mission Management**: Pre-defined Mars settlement missions
-- **TypeScript**: Full type safety and IntelliSense support
-- **RESTful API**: Clean, documented endpoints
-- **Error Handling**: Comprehensive error handling and logging
-- **Security**: Helmet.js security headers and CORS protection
+### Frontend (React/TypeScript)
+- Modern, responsive UI with React 18
+- Type-safe development with TypeScript
+- State management with React Context
+- Beautiful UI components with Tailwind CSS
+- Real-time data visualization
 
-## 📡 NASA APIs Integrated
+### Backend (Node.js/Express)
+- RESTful API with Express
+- NASA API integration
+- TypeScript for type safety
+- Secure API endpoints
+- Comprehensive error handling
 
-- **Mars Rover Photos API**: Images from Curiosity, Opportunity, Spirit, and Perseverance
-- **Mars Weather Service**: Real-time weather data from InSight lander
-- **Astronomy Picture of the Day (APOD)**: Daily space images
-- **Mars Rover Manifest**: Mission details and photo counts
-
-## 🛠️ Setup
-
-### 1. Get NASA API Key
-1. Visit [NASA API Portal](https://api.nasa.gov/)
-2. Fill out the registration form
-3. Copy your API key
-
-### 2. Environment Setup
-```bash
-# Copy the example environment file
-cp env.example .env
-
-# Edit .env and add your NASA API key
-NASA_API_KEY=your_nasa_api_key_here
-```
-
-### 3. Install Dependencies
-```bash
-npm install
-```
-
-### 4. Development
-```bash
-# Start development server with hot reload
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
-```
-
-## 📚 API Endpoints
-
-### NASA Data Endpoints
-- `GET /api/nasa/mars-photos` - Get Mars rover photos
-- `GET /api/nasa/mars-weather` - Get Mars weather data
-- `GET /api/nasa/apod` - Get Astronomy Picture of the Day
-- `GET /api/nasa/rover-manifest/:rover` - Get rover mission details
-- `GET /api/nasa/rovers` - Get available rovers
-- `GET /api/nasa/cameras/:rover` - Get available cameras for a rover
-- `GET /api/nasa/random-photo` - Get random Mars photo for missions
-
-### Mission Endpoints
-- `GET /api/missions` - Get all missions (with optional filters)
-- `GET /api/missions/:id` - Get specific mission
-- `GET /api/missions/category/:category` - Get missions by category
-- `GET /api/missions/meta/categories` - Get available categories
-- `GET /api/missions/meta/difficulties` - Get difficulty levels
-
-### Health Check
-- `GET /health` - API health status
-
-## 🔧 Example Usage
-
-### Get Mars Photos
-```bash
-curl "http://localhost:3001/api/nasa/mars-photos?rover=curiosity&sol=1000&camera=MAST"
-```
-
-### Get Mars Weather
-```bash
-curl "http://localhost:3001/api/nasa/mars-weather"
-```
-
-### Get Missions
-```bash
-curl "http://localhost:3001/api/missions?category=habitat&difficulty=intermediate"
-```
-
-## 🏗️ Project Structure
+## 🛠️ Project Structure
 
 ```
-backend/
-├── src/
-│   ├── routes/          # API route handlers
-│   ├── services/        # Business logic and NASA API integration
-│   ├── types/           # TypeScript type definitions
-│   ├── middleware/      # Express middleware
+mars-quest-innovate/
+├── frontend/            # React frontend application
+│   ├── public/          # Static assets
+│   ├── src/             # Source code
+│   │   ├── assets/      # Images, fonts, etc.
+│   │   ├── components/  # Reusable UI components
+│   │   ├── pages/       # Page components
+│   │   ├── services/    # API services
+│   │   ├── types/       # TypeScript type definitions
+│   │   └── ...
+│   ├── package.json
+│   └── ...
+│
+├── backend/             # Node.js/Express backend
+│   ├── src/
+│   │   ├── routes/     # API routes
+│   │   ├── services/   # Business logic
+│   │   ├── types/      # TypeScript types
+│   │   └── ...
+│   ├── package.json
+│   └── ...
+│
+├── .gitignore
+└── package.json         # Root package.json with shared scripts
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+- NASA API key (get one from [NASA API Portal](https://api.nasa.gov/))
+
+### Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/mars-quest-innovate.git
+   cd mars-quest-innovate
+   ```
+
+2. **Install dependencies**
+   ```bash
+   # Install root dependencies
+   npm install
+
+   # Install frontend and backend dependencies
+   npm run install:all
+   ```
+
+3. **Environment Setup**
+   - Backend: Copy `.env.example` to `.env` in the backend directory and add your NASA API key
+   - Frontend: No additional setup required for development
+
+4. **Development**
+   ```bash
+   # Start both frontend and backend in development mode
+   npm run dev
+   ```
+   - Frontend will be available at: http://localhost:3000
+   - Backend API will be available at: http://localhost:3001
+
+## 🏗️ Available Scripts
+
+### Root Scripts
+- `npm install:all` - Install all dependencies (root, frontend, and backend)
+- `npm run dev` - Start both frontend and backend in development mode
+- `npm run build` - Build both frontend and backend for production
+- `npm start` - Start the production server
+
+### Frontend Scripts (run from /frontend)
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+
+### Backend Scripts (run from /backend)
+- `npm run dev` - Start development server with hot reload
+- `npm run build` - Compile TypeScript to JavaScript
+- `npm start` - Start production server
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a new branch for your feature or bugfix
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 │   └── index.ts         # Main application entry point
 ├── dist/                # Compiled JavaScript (after build)
 ├── package.json
