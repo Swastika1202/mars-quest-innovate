@@ -5,6 +5,7 @@ export interface ICommunity extends Document {
   description: string;
   members: Schema.Types.ObjectId[]; // Array of User IDs
   admin: Schema.Types.ObjectId; // User ID of the admin
+  solutionsCount: number; // New field to track the number of solutions
   createdAt: Date;
   updatedAt: Date;
 }
@@ -34,6 +35,10 @@ const communitySchema = new Schema<ICommunity>(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
+    },
+    solutionsCount: {
+      type: Number,
+      default: 0,
     },
   },
   {

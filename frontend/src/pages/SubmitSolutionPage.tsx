@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -7,6 +7,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useApi } from '../hooks/useAxiosApi';
+import { useAuth } from '../context/AuthContext';
+
+interface Community {
+  _id: string;
+  name: string;
+}
 
 const categories = [
   "Habitat", "Water", "Energy", "Agriculture", "Life Support",
@@ -15,17 +22,36 @@ const categories = [
 
 const SubmitSolutionPage: React.FC = () => {
   const navigate = useNavigate();
+  const api = useApi();
+  const { userId } = useAuth();
   const [formData, setFormData] = useState({
     userName: '',
     email: '',
     universityName: '',
     category: '',
-    communityName: '',
+    communityId: '',
+    title: '',
     description: '',
     reportFile: null as File | null,
     youtubeLink: '',
     prototypeLink: '',
   });
+  const [communities, setCommunities] = useState<Community[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCommunities = async () => {
+      try {
+        const response = await api.get('/communities');
+        setCommunities(response.data);
+      } catch (err: any) {
+        console.error('Error fetching communities:', err);
+        setError(err.response?.data?.message || 'Failed to fetch communities.');
+      }
+    };
+    fetchCommunities();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
@@ -51,13 +77,64 @@ const SubmitSolutionPage: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleCommunityChange = (value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      communityId: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Solution Submitted:', formData);
-    // In a real application, you would send this data to a backend API.
-    // For now, we'll just navigate back to the Innovation Hub.
-    navigate('/innovation-hub');
-    alert('Solution submitted successfully!');
+    setError(null);
+    setSuccess(null);
+
+    if (!userId) {
+      setError('You must be logged in to submit a solution.');
+      return;
+    }
+
+    if (!formData.title || !formData.description || !formData.communityId || !formData.userName || !formData.email || !formData.universityName || !formData.category) {
+      setError('Please fill in all required fields.');
+      return;
+    }
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('community', formData.communityId);
+      formDataToSend.append('userName', formData.userName);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('universityName', formData.universityName);
+      formDataToSend.append('category', formData.category);
+      if (formData.youtubeLink) formDataToSend.append('youtubeLink', formData.youtubeLink);
+      if (formData.prototypeLink) formDataToSend.append('prototypeLink', formData.prototypeLink);
+      if (formData.reportFile) formDataToSend.append('reportFile', formData.reportFile);
+
+      await api.post(`/solutions/communities/${formData.communityId}/solutions`, formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setSuccess('Solution submitted successfully!');
+      setFormData({
+        userName: '',
+        email: '',
+        universityName: '',
+        category: '',
+        communityId: '',
+        title: '',
+        description: '',
+        reportFile: null,
+        youtubeLink: '',
+        prototypeLink: '',
+      });
+      navigate('/innovation-hub');
+    } catch (err: any) {
+      console.error('Error submitting solution:', err);
+      setError(err.response?.data?.message || 'Failed to submit solution.');
+    }
   };
 
   return (
@@ -98,6 +175,11 @@ const SubmitSolutionPage: React.FC = () => {
               </div>
 
               <div>
+                <Label htmlFor="title">Solution Title</Label>
+                <Input id="title" type="text" value={formData.title} onChange={handleChange} required className="bg-gray-700 border-gray-600 text-white" />
+              </div>
+
+              <div>
                 <Label htmlFor="category">Solution Category</Label>
                 <Select onValueChange={handleCategoryChange} value={formData.category} required>
                   <SelectTrigger className="w-full bg-gray-700 border-gray-600 text-white">
@@ -112,8 +194,17 @@ const SubmitSolutionPage: React.FC = () => {
               </div>
 
               <div>
-                <Label htmlFor="communityName">Community Name (Optional)</Label>
-                <Input id="communityName" type="text" value={formData.communityName} onChange={handleChange} className="bg-gray-700 border-gray-600 text-white" />
+                <Label htmlFor="community">Select Community</Label>
+                <Select onValueChange={handleCommunityChange} value={formData.communityId} required>
+                  <SelectTrigger className="w-full bg-gray-700 border-gray-600 text-white">
+                    <SelectValue placeholder="Select a community" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-700 border-gray-600 text-white">
+                    {communities.map(community => (
+                      <SelectItem key={community._id} value={community._id}>{community.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div>
@@ -135,6 +226,9 @@ const SubmitSolutionPage: React.FC = () => {
                 <Label htmlFor="prototypeLink">Prototype Link (e.g., GitHub, Figma, 3D Model)</Label>
                 <Input id="prototypeLink" type="url" value={formData.prototypeLink} onChange={handleChange} placeholder="https://github.com/your_project" className="bg-gray-700 border-gray-600 text-white" />
               </div>
+
+              {error && <p className="text-red-500 text-center">{error}</p>}
+              {success && <p className="text-green-500 text-center">{success}</p>}
 
               <Button type="submit" className="w-full gradient-mars text-white font-semibold py-3 text-lg">
                 Submit Solution

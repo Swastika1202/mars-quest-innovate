@@ -255,40 +255,6 @@ const ProfilePage: React.FC = () => {
           <div className="space-y-4">
             <h3 className="text-2xl font-semibold text-red-300">My Communities</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-<<<<<<< HEAD
-              {myCommunities.map((community) => (
-                <Card key={community.id} className="bg-gray-700/50 border-gray-600 hover:border-red-500 transition-all duration-300">
-                  <CardHeader>
-                    <CardTitle className="text-xl text-white flex items-center justify-between">
-                      <span>{community.name}</span>
-                      <span className={`text-xs px-2 py-1 rounded-full ${
-                        community.role === 'Admin' ? 'bg-red-500' : 
-                        community.role === 'Moderator' ? 'bg-orange-500' : 
-                        'bg-blue-500'
-                      }`}>
-                        {community.role}
-                      </span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-300 text-sm mb-3">{community.description}</p>
-                    <div className="flex items-center gap-2 text-gray-400 text-sm mb-3">
-                      <Users className="h-4 w-4" />
-                      <span>{community.members.toLocaleString()} members</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        onClick={() => navigate('/community')}
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm"
-                        size="sm"
-                      >
-                        View Community
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-=======
               {myCommunities.length > 0 ? ( // Check if communities exist
                 myCommunities.map((community) => (
                   <Card key={community._id} className="bg-gray-700/50 border-gray-600 hover:border-red-500 transition-all duration-300">
@@ -310,14 +276,13 @@ const ProfilePage: React.FC = () => {
                         <span>{community.members.length.toLocaleString()} members</span>
                       </div>
                       <div className="flex gap-2 mt-4">
-                        <Button
+                        {/* <Button
                           onClick={() => navigate(`/chat/${community._id}`)}
                           className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm"
                           size="sm"
                         >
-                          <MessageCircle className="h-4 w-4 mr-2" />
                           Chat
-                        </Button>
+                        </Button> */}
                         <Button
                           onClick={() => navigate('/community')}
                           variant="outline"
@@ -333,7 +298,6 @@ const ProfilePage: React.FC = () => {
               ) : (
                 <p className="text-gray-400">No communities joined yet.</p>
               )}
->>>>>>> 38bf5a140e586e2260685f60aa72e9c456431908
             </div>
           </div>
         );

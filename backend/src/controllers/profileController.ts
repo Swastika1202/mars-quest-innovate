@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { User } from '../models/User';
-import { cloudinary } from '../config/cloudinary';
+import cloudinary from '../config/cloudinary';
 
 export const getUserProfile = async (req: Request, res: Response) => {
   try {

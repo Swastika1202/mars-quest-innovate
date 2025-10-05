@@ -4,14 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
-<<<<<<< HEAD
-import { Users, Lightbulb, Plus, Search } from 'lucide-react';
-=======
 import { Users, Lightbulb, Plus, Search, MessageCircle } from 'lucide-react';
 import { useApi } from '../hooks/useAxiosApi';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
->>>>>>> 38bf5a140e586e2260685f60aa72e9c456431908
 
 interface Community {
   _id: string; // Changed from id to _id (MongoDB ObjectId)
@@ -19,7 +15,7 @@ interface Community {
   description: string; // Changed from challenge to description
   members: string[]; // Array of user IDs (strings)
   admin: string; // Admin user ID
-  solutions?: number; // Optional, if you want to track it on frontend
+  solutionsCount: number; // New field to track the number of solutions
 }
 
 // Removed initialCommunities as data will be fetched from backend
@@ -30,16 +26,12 @@ const CommunityPage: React.FC = () => {
   const [newCommunityName, setNewCommunityName] = useState('');
   const [newCommunityDescription, setNewCommunityDescription] = useState(''); // Changed from newCommunityChallenge
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-<<<<<<< HEAD
-  const [joinedCommunities, setJoinedCommunities] = useState<number[]>([]);
-=======
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const { userId, isLoggedIn } = useAuth();
   const api = useApi();
   const navigate = useNavigate();
->>>>>>> 38bf5a140e586e2260685f60aa72e9c456431908
 
   const fetchCommunities = async () => {
     try {
@@ -229,21 +221,8 @@ const CommunityPage: React.FC = () => {
                   <p className="text-gray-300"><span className="font-semibold">Description:</span> {community.description}</p> {/* Changed from Challenge */}
                   <div className="flex items-center justify-between text-gray-400">
                     <span className="flex items-center gap-1"><Users className="h-4 w-4" /> {community.members.length} Members</span> {/* Display members length */}
-                    <span className="flex items-center gap-1"><Lightbulb className="h-4 w-4" /> {community.solutions || 0} Solutions</span> {/* Assuming solutions might be 0 initially */}
+                    <span className="flex items-center gap-1"><Lightbulb className="h-4 w-4" /> {community.solutionsCount || 0} Solutions</span> {/* Assuming solutions might be 0 initially */}
                   </div>
-<<<<<<< HEAD
-                  <Button
-                    onClick={() => handleJoinCommunity(community.id)}
-                    disabled={isCommunityJoined(community.id)}
-                    className={`w-full ${
-                      isCommunityJoined(community.id)
-                        ? 'bg-gray-600 hover:bg-gray-600 text-gray-400 cursor-not-allowed'
-                        : 'bg-blue-600 hover:bg-blue-700 text-white'
-                    }`}
-                  >
-                    {isCommunityJoined(community.id) ? 'You are already joined' : 'Join Community'}
-                  </Button>
-=======
                   {isLoggedIn && (
                     isCommunityJoined(community._id) ? (
                       <>
@@ -253,13 +232,13 @@ const CommunityPage: React.FC = () => {
                         >
                           Leave Community
                         </Button>
-                        <Button
+                        {/* <Button
                           onClick={() => navigate(`/chat/${community._id}`)}
                           className="w-full bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
                         >
                           <MessageCircle className="h-4 w-4" />
                           Chat with Community
-                        </Button>
+                        </Button> */}
                       </>
                     ) : (
                       <Button
@@ -278,7 +257,6 @@ const CommunityPage: React.FC = () => {
                       Login to Join
                     </Button>
                   )}
->>>>>>> 38bf5a140e586e2260685f60aa72e9c456431908
                 </Card>
               ))
             ) : (

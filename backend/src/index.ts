@@ -9,6 +9,7 @@ import { missionRoutes } from './routes/mission.routes';
 import profileRoutes from './routes/profile.routes'; // Import profile routes
 import authRoutes from './routes/auth.routes'; // Import auth routes
 import communityRoutes from './routes/community.routes'; // Import community routes
+import solutionRoutes from './routes/solutionRoutes'; // Import solution routes
 import { errorHandler } from './middleware/errorHandler';
 import { connectDB, disconnectDB } from './config/database'; // Uncommented database imports
 
@@ -57,6 +58,7 @@ app.use('/api/missions', missionRoutes);
 app.use('/api/profile', profileRoutes); // Use profile routes
 app.use('/api/auth', authRoutes); // Use auth routes
 app.use('/api/communities', communityRoutes); // Use community routes
+app.use('/api/solutions', solutionRoutes); // Use solution routes
 
 // Health check endpoint
 app.get('/health', (req, res) => {
