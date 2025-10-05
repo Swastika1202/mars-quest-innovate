@@ -5,15 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import { Progress } from '@/components/ui/progress';
-import { Pencil, Save, BellRing, BellOff, User, BookOpen, Lightbulb, TrendingUp, Settings as SettingsIcon, LogIn, LogOut } from 'lucide-react'; // Icons for edit, save, notifications, and sidebar items
+import { Pencil, Save, BellRing, BellOff, User, BookOpen, Lightbulb, Users, Settings as SettingsIcon, LogIn, LogOut } from 'lucide-react'; // Icons for edit, save, notifications, and sidebar items
 import { useAuth } from '../context/AuthContext';
 
 const ProfilePage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const { isLoggedIn, login, logout } = useAuth(); // Use AuthContext
-  const [selectedSection, setSelectedSection] = useState('details'); // 'details', 'missions', 'solutions', 'progress', 'settings'
+  const [selectedSection, setSelectedSection] = useState('details'); // 'details', 'missions', 'solutions', 'communities', 'settings'
   const [profileData, setProfileData] = useState({
     name: "John Doe",
     email: "john.doe@example.com",
@@ -63,7 +62,12 @@ const ProfilePage: React.FC = () => {
     { id: 2, title: "Dust Storm Shield Design", votes: 85 },
   ];
 
-  const overallProgress = 75; // Percentage
+  const myCommunities = [
+    { id: 1, name: "Mars Habitat Designers", members: 1250, role: "Member", description: "A community focused on designing sustainable habitats for Mars colonization" },
+    { id: 2, name: "Water Extraction Innovators", members: 890, role: "Admin", description: "Exploring innovative methods for water extraction on Mars" },
+    { id: 3, name: "Solar Energy Solutions", members: 2100, role: "Member", description: "Developing efficient solar energy systems for Mars missions" },
+    { id: 4, name: "Greenhouse Agriculture", members: 1540, role: "Moderator", description: "Creating sustainable food production systems for Mars colonies" },
+  ];
 
   // Remove local handleLogin and handleLogout as they will come from AuthContext
 
@@ -148,13 +152,34 @@ const ProfilePage: React.FC = () => {
             </ul>
           </div>
         );
-      case 'progress':
+      case 'communities':
         return (
           <div className="space-y-4">
-            <h3 className="text-2xl font-semibold text-red-300">Overall Progress</h3>
-            <div className="flex items-center gap-4">
-              <Progress value={overallProgress} className="flex-1 h-4 bg-red-700" indicatorClassName="bg-red-400" />
-              <span className="text-xl font-bold">{overallProgress}%</span>
+            <h3 className="text-2xl font-semibold text-red-300">My Communities</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {myCommunities.map((community) => (
+                <Card key={community.id} className="bg-gray-700/50 border-gray-600 hover:border-red-500 transition-all duration-300">
+                  <CardHeader>
+                    <CardTitle className="text-xl text-white flex items-center justify-between">
+                      <span>{community.name}</span>
+                      <span className={`text-xs px-2 py-1 rounded-full ${
+                        community.role === 'Admin' ? 'bg-red-500' : 
+                        community.role === 'Moderator' ? 'bg-orange-500' : 
+                        'bg-blue-500'
+                      }`}>
+                        {community.role}
+                      </span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-300 text-sm mb-3">{community.description}</p>
+                    <div className="flex items-center gap-2 text-gray-400 text-sm">
+                      <Users className="h-4 w-4" />
+                      <span>{community.members.toLocaleString()} members</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         );
@@ -284,10 +309,10 @@ const ProfilePage: React.FC = () => {
             </Button>
             <Button
               variant="ghost"
-              className={`w-full justify-start text-lg ${selectedSection === 'progress' ? 'bg-red-700 hover:bg-red-600' : 'hover:bg-gray-700'}`}
-              onClick={() => setSelectedSection('progress')}
+              className={`w-full justify-start text-lg ${selectedSection === 'communities' ? 'bg-red-700 hover:bg-red-600' : 'hover:bg-gray-700'}`}
+              onClick={() => setSelectedSection('communities')}
             >
-              <TrendingUp className="h-5 w-5 mr-3" /> Progress
+              <Users className="h-5 w-5 mr-3" /> My Communities
             </Button>
             <Button
               variant="ghost"
@@ -296,6 +321,17 @@ const ProfilePage: React.FC = () => {
             >
               <SettingsIcon className="h-5 w-5 mr-3" /> Settings
             </Button>
+            
+            {/* Logout Button in Sidebar */}
+            {isLoggedIn && (
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-lg hover:bg-red-900 text-red-400 hover:text-red-300 mt-4"
+                onClick={logout}
+              >
+                <LogOut className="h-5 w-5 mr-3" /> Logout
+              </Button>
+            )}
           </nav>
         </div>
 

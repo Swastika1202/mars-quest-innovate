@@ -1,6 +1,8 @@
 import React, { useState, FC } from "react";
-import { FaBars, FaTimes, FaRocket, FaInfoCircle, FaHome, FaMoon, FaGraduationCap, FaUsers, FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { FaBars, FaTimes, FaRocket, FaInfoCircle, FaHome, FaMoon, FaGraduationCap, FaUsers, FaPlay } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import GuidedTour from "./GuidedTour";
 
 interface MenuItem {
   name: string;
@@ -10,23 +12,26 @@ interface MenuItem {
 
 const Navbar: FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const startTour = () => {
+    setIsTourOpen(true);
+    setIsOpen(false);
   };
 
   const { isLoggedIn } = useAuth();
 
   const menuItems: MenuItem[] = [
     { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "Features", href: "/features" },
-    { name: "Learn About Mars", href: "/learn-about-mars", icon: <FaInfoCircle /> },
+    { name: "Mars Talk", href: "/learn-about-mars" },
+    { name: "Nasa Knowledge", href: "/nasa-knowledge"},
     { name: "Explore Mission", href: "/start-mission", icon: <FaRocket /> },
-  ];
-
-  const authMenuItems: MenuItem[] = [
-    { name: "Create Mission", href: "/missions/create", icon: <FaPlus className="mr-1" /> },
+    // Removed Community link
+    // Profile link is now conditionally rendered outside the map
   ];
 
   const profileMenuItem: MenuItem = { name: "Profile", href: "/profile", icon: <FaGraduationCap /> };
@@ -36,42 +41,38 @@ const Navbar: FC = () => {
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
-          <div className="flex-shrink-0 text-2xl font-bold tracking-wide">
+          <Link to="/" className="navbar-logo flex-shrink-0 text-2xl font-bold tracking-wide hover:text-red-400 transition-colors duration-300">
             Mars Dashboard
-          </div>
+          </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6 items-center">
-            {menuItems.map((item) => (
+            {menuItems.map((item) => {
+              let className = "flex items-center gap-1 hover:text-red-400 transition-colors duration-300";
+              if (item.name === "Home") className += " navbar-home";
+              if (item.name === "Mars Talk") className += " navbar-mars-talk";
+              if (item.name === "Nasa Knowledge") className += " navbar-nasa";
+              if (item.name === "Explore Mission") className += " navbar-mission";
+              
+              return (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className={className}
+                >
+                  {item.icon && <span>{item.icon}</span>}
+                  {item.name}
+                </a>
+              );
+            })}
+            {isLoggedIn ? (
               <a
-                key={item.name}
-                href={item.href}
+                href={profileMenuItem.href}
                 className="flex items-center gap-1 hover:text-red-400 transition-colors duration-300"
               >
-                {item.icon && <span>{item.icon}</span>}
-                {item.name}
+                {profileMenuItem.icon && <span>{profileMenuItem.icon}</span>}
+                {profileMenuItem.name}
               </a>
-            ))}
-            {isLoggedIn ? (
-              <>
-                {authMenuItems.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors duration-300"
-                  >
-                    {item.icon}
-                    {item.name}
-                  </a>
-                ))}
-                <a
-                  href={profileMenuItem.href}
-                  className="flex items-center gap-1 hover:text-red-400 transition-colors duration-300"
-                >
-                  {profileMenuItem.icon && <span>{profileMenuItem.icon}</span>}
-                  {profileMenuItem.name}
-                </a>
-              </>
             ) : (
               <a
                 href="/signin"
@@ -99,7 +100,6 @@ const Navbar: FC = () => {
               <a
                 key={item.name}
                 href={item.href}
-                onClick={() => setIsOpen(false)}
                 className="flex items-center gap-1 w-full px-3 py-2 rounded-md hover:bg-red-800 transition-colors duration-300"
               >
                 {item.icon && <span>{item.icon}</span>}
@@ -107,32 +107,17 @@ const Navbar: FC = () => {
               </a>
             ))}
             {isLoggedIn ? (
-              <>
-                {authMenuItems.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1 w-full px-3 py-2 rounded-md bg-blue-800 hover:bg-blue-700 transition-colors duration-300"
-                  >
-                    {item.icon}
-                    {item.name}
-                  </a>
-                ))}
-                <a
-                  href={profileMenuItem.href}
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-1 w-full px-3 py-2 rounded-md hover:bg-red-800 transition-colors duration-300"
-                >
-                  {profileMenuItem.icon && <span>{profileMenuItem.icon}</span>}
-                  {profileMenuItem.name}
-                </a>
-              </>
+              <a
+                href={profileMenuItem.href}
+                className="flex items-center gap-1 w-full px-3 py-2 rounded-md hover:bg-red-800 transition-colors duration-300"
+              >
+                {profileMenuItem.icon && <span>{profileMenuItem.icon}</span>}
+                {profileMenuItem.name}
+              </a>
             ) : (
               <a
                 href="/signin"
-                onClick={() => setIsOpen(false)}
-                className="w-full px-3 py-2 rounded-md text-center bg-red-600 text-white font-semibold hover:bg-red-500 transition-colors duration-300"
+                className="w-full text-center bg-red-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-red-500 transition-colors duration-300"
               >
                 Sign In / Sign Up
               </a>
@@ -140,6 +125,9 @@ const Navbar: FC = () => {
           </div>
         </div>
       )}
+      
+      {/* Guided Tour */}
+      <GuidedTour isOpen={isTourOpen} onClose={() => setIsTourOpen(false)} />
     </nav>
   );
 };

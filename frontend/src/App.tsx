@@ -19,14 +19,12 @@ import LearningPage from "./pages/LearningPage";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import ProfilePage from "./pages/ProfilePage";
-import Features from "./pages/Features"; // Import Features page
-import About from "./pages/About"; // Import About page
 import CommunityPage from "./pages/CommunityPage"; // Import CommunityPage
 import SolutionDetails from "./pages/SolutionDetails"; // Import SolutionDetails page
+import NasaKnowledge from "./pages/NasaKnowledge"; // Import NasaKnowledge page
 import { AuthProvider } from "./context/AuthContext";
 import { useState, useEffect } from 'react';
 import SubmitSolutionPage from "./pages/SubmitSolutionPage";
-import CreateMission from "./pages/CreateMission";
 
 const queryClient = new QueryClient();
 
@@ -53,13 +51,12 @@ const App = () => {
         ) : (
           <>
             <AuthProvider>
-              <Navbar />
-              <div className="animate-slide-in-from-top-fade-in"> {/* Add padding-top for fixed navbar */}
-                <BrowserRouter>
+              <BrowserRouter>
+                <Navbar />
+                <div className="animate-slide-in-from-top-fade-in"> {/* Add padding-top for fixed navbar */}
                   <Routes>
                     <Route path="/" element={<Index />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/features" element={<Features />} />
+                    <Route path="/about" element={<Index />} />
                     <Route path="/explore-mission" element={<div>Explore Mission Page Placeholder</div>} />
                     <Route path="/signin" element={<SignIn />} />
                     <Route path="/signup" element={<SignUp />} /> {/* Add a new route for SignUp */}
@@ -70,17 +67,19 @@ const App = () => {
                     <Route path="/start-mission" element={<StartMission />} />
                     <Route path="/innovation-hub" element={<InnovationHubPage />} />
                     <Route path="/student-solutions" element={<StudentSolutions />} />
+                    <Route path="/achievements" element={<Achievements />} />
                     <Route path="/leaderboard" element={<Leaderboard />} />
                     <Route path="/learn-about-mars" element={<LearningPage />} />
                     <Route path="/profile" element={<ProfilePage />} /> {/* New route for ProfilePage */}
                     <Route path="/community" element={<CommunityPage />} /> {/* New route for CommunityPage */}
                     <Route path="/solution/:id" element={<SolutionDetails />} /> {/* Route for SolutionDetails */}
-                    <Route path="/submit-solution" element={<SubmitSolutionPage />} />
-                    <Route path="/missions/create" element={<CreateMission />} />
+                    <Route path="/submit-solution" element={<SubmitSolutionPage />} /> {/* New route for SubmitSolutionPage */}
+                    <Route path="/nasa-knowledge" element={<NasaKnowledge />} /> {/* New route for NasaKnowledge */}
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
-                </BrowserRouter>
-              </div>
+                </div>
+              </BrowserRouter>
             </AuthProvider>
           </>
         )}
