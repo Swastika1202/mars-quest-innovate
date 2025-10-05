@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Exo+2:wght@400;600&display=swap');
+
+.chapter1-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+  color: #fff;
+  font-family: 'Exo 2', sans-serif;
+}
+
+.chapter-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  color: #FFD700;
+  text-align: center;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  letter-spacing: 1px;
+  animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+.holographic-box {
+  width: 90%;
+  max-width: 600px;
+  aspect-ratio: 1;
+  background: rgba(10, 10, 30, 0.6);
+  border-radius: 20px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 0 20px rgba(0, 162, 255, 0.2),
+    0 0 40px rgba(0, 162, 255, 0.1),
+    inset 0 0 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 162, 255, 0.2);
+}
+
+.space-scene {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+/* Stars Background */
+.stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* Mars Planet */
+.mars-planet {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  overflow: visible;
+  box-shadow: 0 0 40px rgba(205, 92, 92, 0.6);
+  z-index: 2;
+}
+
+.planet-core {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 30%, #c1440e, #8B0000);
+  border-radius: 50%;
+  box-shadow: inset 10px 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.planet-surface {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 70% 30%, rgba(255, 140, 0, 0.2), transparent 60%),
+    radial-gradient(circle at 30% 70%, rgba(165, 42, 42, 0.3), transparent 50%),
+    radial-gradient(ellipse at 30% 40%, #c1440e, #8B0000 70%);
+  border-radius: 50%;
+  opacity: 0.9;
+  animation: rotate 300s linear infinite;
+}
+
+/* Rocket Orbit */
+.rocket-orbit {
+  position: absolute;
+  width: 300px;  /* Adjusted to be just outside Mars */
+  height: 300px; /* Adjusted to be just outside Mars */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  animation: rotateOrbit 20s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.rocket {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(90deg);
+  font-size: 1.8rem;
+  animation: 
+    rotateRocket 20s linear infinite,
+    rocketFloat 2s ease-in-out infinite alternate;
+  transform-origin: 50% 150px; /* Center of the orbit */
+  filter: drop-shadow(0 0 10px rgba(255, 200, 0, 0.9));
+  z-index: 3;
+  will-change: transform;
+}
+
+/* Twinkling Stars */
+.twinkling-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.twinkle {
+  position: absolute;
+  background-color: #fff;
+  border-radius: 50%;
+  width: var(--size, 2px);
+  height: var(--size, 2px);
+  top: var(--y, 50%);
+  left: var(--x, 50%);
+  animation: twinkle var(--duration, 3s) infinite ease-in-out;
+  animation-delay: var(--delay, 0s);
+  opacity: 0;
+}
+
+/* Animations */
+@keyframes titleGlow {
+  from { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+  to { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.4); }
+}
+
+@keyframes rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes rotateOrbit {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes rotateRocket {
+  from { 
+    transform: translateX(-50%) rotate(90deg);
+  }
+  to { 
+    transform: translateX(-50%) rotate(450deg);
+  }
+}
+
+@keyframes rocketFloat {
+  0% { transform: translateX(-50%) translateY(0) scale(1); }
+  100% { transform: translateX(-50%) translateY(-5px) scale(1.1); }
+}
+
+@keyframes twinkle {
+  0%, 100% { 
+    opacity: 0.2; 
+    transform: scale(1); 
+    box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.3);
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.3); 
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.6);
+  }
+}

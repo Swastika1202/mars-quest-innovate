@@ -1,0 +1,220 @@
+/* Main Container */
+.challenges-container {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.challenges-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Mars Habitat */
+.mars-habitat {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+/* Habitat Dome */
+.habitat-dome {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 0 50px rgba(255, 100, 0, 0.4),
+    inset 0 0 80px rgba(0, 0, 0, 0.5);
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  margin: 0 auto;
+}
+
+/* Habitat Interior */
+.habitat-interior {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+}
+
+.astronaut {
+  font-size: 4rem;
+  margin-bottom: 15px;
+  animation: float 3s ease-in-out infinite;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.habitat-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4fc3f7;
+  text-shadow: 0 0 10px rgba(79, 195, 247, 0.7);
+  animation: pulse 2s infinite;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: 1px solid rgba(79, 195, 247, 0.3);
+}
+
+/* Challenge Indicators */
+.challenge {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 25px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 3;
+  transition: all 0.3s ease;
+  animation: float 3s ease-in-out infinite;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  min-width: 120px;
+  justify-content: center;
+}
+
+.challenge .icon {
+  margin-right: 8px;
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+.challenge .label {
+  white-space: nowrap;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+}
+
+/* Position each challenge */
+.temperature {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(66, 165, 245, 0.3);
+  border: 1px solid rgba(66, 165, 245, 0.6);
+  animation-delay: 0.2s;
+  min-width: 140px;
+  z-index: 4;
+}
+
+.air {
+  top: 15%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: rgba(100, 255, 218, 0.3);
+  border: 1px solid rgba(100, 255, 218, 0.6);
+  animation-delay: 0.4s;
+  min-width: 160px;
+  z-index: 3;
+}
+
+.radiation {
+  bottom: 15%;
+  left: 10px;
+  transform: translateY(50%);
+  background: rgba(255, 76, 54, 0.3);
+  border: 1px solid rgba(255, 76, 54, 0.6);
+  animation-delay: 0.6s;
+  min-width: 140px;
+  z-index: 3;
+}
+
+.soil {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(174, 234, 0, 0.3);
+  border: 1px solid rgba(174, 234, 0, 0.6);
+  animation-delay: 0.8s;
+  min-width: 140px;
+  z-index: 4;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.9;
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(79, 195, 247, 0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+    text-shadow: 0 0 15px rgba(79, 195, 247, 1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .challenges-container {
+    min-height: 320px;
+    padding: 15px;
+  }
+  
+  .mars-habitat {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .habitat-dome {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .challenge {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    min-width: 110px;
+  }
+  
+  .challenge {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    min-width: 100px;
+  }
+  
+  .challenge .icon {
+    font-size: 1.2rem;
+  }
+  
+  .astronaut {
+    font-size: 3rem;
+  }
+  
+  .habitat-text {
+    font-size: 1rem;
+    padding: 6px 12px;
+  }
+}

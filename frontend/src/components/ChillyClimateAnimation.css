@@ -1,0 +1,175 @@
+.winter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  background: transparent;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.winter-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.snowflakes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.snowflake {
+  position: absolute;
+  color: #ffffff;
+  font-size: var(--size, 4px);
+  left: var(--left);
+  top: -20px;
+  opacity: var(--opacity, 0.6);
+  animation: snowfall linear infinite;
+  animation-duration: var(--duration);
+  animation-delay: var(--delay);
+  will-change: transform;
+  transform: translateY(0);
+  text-shadow: 
+    0 0 var(--blur, 1px) var(--spread, 1px) rgba(255, 255, 255, 0.8),
+    0 0 calc(var(--blur, 1px) * 2) calc(var(--spread, 1px) * 2) rgba(255, 255, 255, 0.5);
+  -webkit-text-stroke: 0;
+  -webkit-text-fill-color: #ffffff;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+  font-weight: bold;
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(-20px) translateX(0);
+    opacity: 0;
+  }
+  2% {
+    opacity: var(--opacity);
+  }
+  98% {
+    opacity: var(--opacity);
+  }
+  100% {
+    transform: translateY(calc(100vh + 20px)) translateX(calc((var(--start) - 50%) * 0.3));
+    opacity: 0;
+  }
+}
+
+/* Mars Habitat */
+.mars-habitat {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.habitat-svg {
+  width: 80%;
+  max-width: 400px;
+  height: auto;
+  transform: translateY(10%);
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+}
+
+/* Snow accumulation on habitat */
+@keyframes snow-accumulate {
+  0% { transform: translateY(-100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 0.8; }
+}
+
+.habitat-svg path,
+.habitat-svg rect,
+.habitat-svg ellipse {
+  animation: snow-accumulate 10s ease-out forwards;
+  animation-delay: 2s;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Mars Terrain */
+.mars-terrain {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.terrain-svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Add some subtle texture to the terrain */
+.terrain-svg path {
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+}
+
+.terrain-svg path:first-child {
+  filter: blur(1px);
+}
+
+.terrain-svg path:last-child {
+  filter: drop-shadow(0 -2px 5px rgba(0, 0, 0, 0.2));
+}
+
+/* Add some subtle wind effect */
+@keyframes sway {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(calc((random(20) - 10) * 1px));
+  }
+}
+
+.temperature-text {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 2;
+}
+
+.temperature-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 5px 0;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.temperature-note {
+  font-size: 0.9rem;
+  font-style: italic;
+  opacity: 0.9;
+}

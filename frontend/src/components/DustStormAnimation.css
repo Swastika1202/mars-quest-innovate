@@ -1,0 +1,65 @@
+.dust-storm-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #2c1810 0%, #1a0f0a 100%);
+  border-radius: 8px;
+}
+
+.dust-storm-canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* Add some subtle pulsing effect to simulate wind intensity */
+@keyframes windPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.01);
+  }
+}
+
+.dust-storm-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+  animation: windPulse 5s infinite ease-in-out;
+  opacity: 0.7;
+}
+
+/* Add some subtle red glow to simulate Mars' dust */
+.dust-storm-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 30% 40%,
+    rgba(200, 100, 50, 0.1) 0%,
+    transparent 70%
+  );
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}

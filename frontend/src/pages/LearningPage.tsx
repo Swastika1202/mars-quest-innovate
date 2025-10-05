@@ -1,14 +1,21 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import WeatherAnimation from "@/components/WeatherAnimation";
+import WelcomeAnimation from "@/components/WelcomeAnimation";
+import ChillyClimateAnimation from "@/components/ChillyClimateAnimation";
+import AtmosphereAnimation from "@/components/AtmosphereAnimation";
+import DustStormAnimation from "@/components/DustStormAnimation";
+import DomeAnimation from "@/components/DomeAnimation";
+import ChallengesAnimation from "@/components/ChallengesAnimation";
+import SolarPanelAnimation from "@/components/SolarPanelAnimation";
+import Mars2Animation from "@/components/Mars2Animation";
 
 interface Chapter {
   title: string;
   narration: string;
   type: 'climate' | 'challenge' | 'habitat';
-  animation: string; // Placeholder for animation description/identifier
   badge?: string;
   funFact?: string;
 }
@@ -117,13 +124,54 @@ const LearningPage: React.FC = () => {
             </div>
 
             <div className="flex-1 flex items-center justify-center min-h-[200px] bg-gray-700/50 rounded-lg p-4">
-              {/* Placeholder for animation */}
-              <p className="text-gray-400 text-center text-xl">
-                {currentChapter.type === 'climate' && 'Weather Animation Placeholder: '}
-                {currentChapter.type === 'habitat' && 'Habitat Animation Placeholder: '}
-                {currentChapter.type === 'challenge' && 'Challenge Visualization Placeholder: '}
-                {currentChapter.animation}
-              </p>
+              {currentChapterIndex === 0 ? (
+                <div className="w-full h-full">
+                  <WelcomeAnimation />
+                </div>
+              ) : currentChapterIndex === 1 ? (
+                <div className="w-full h-full">
+                  <ChillyClimateAnimation />
+                </div>
+              ) : currentChapterIndex === 2 ? (
+                <div className="w-full h-full">
+                  <AtmosphereAnimation />
+                </div>
+              ) : currentChapterIndex === 3 ? (
+                <div className="w-full h-full">
+                  <DustStormAnimation />
+                </div>
+              ) : currentChapterIndex === 4 ? ( // Chapter 5: Survival Challenges
+                <div className="w-full h-full">
+                  <ChallengesAnimation />
+                </div>
+              ) : currentChapterIndex === 5 ? ( // Chapter 6: Building Our First Home
+                <div className="w-full h-full">
+                  <DomeAnimation />
+                </div>
+              ) : currentChapterIndex === 6 ? ( // Chapter 7: Greenhouse
+                <div className="w-full h-full">
+                  <AtmosphereAnimation />
+                </div>
+              ) : currentChapterIndex === 7 ? ( // Chapter 8: Solar Panels
+                <div className="w-full h-full">
+                  <SolarPanelAnimation />
+                </div>
+              ) : currentChapterIndex === 8 ? ( // Chapter 9: Mars 2
+                <div className="w-full h-full">
+                  <Mars2Animation />
+                </div>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="w-48 h-36">
+                    <WeatherAnimation />
+                  </div>
+                </div>
+              )}
+              {currentChapter.type === 'habitat' && currentChapterIndex > 5 && currentChapterIndex !== 6 && currentChapterIndex !== 7 && currentChapterIndex !== 8 && (
+                <p className="text-gray-400 text-center text-xl">
+                  {currentChapter.animation}
+                </p>
+              )}
             </div>
           </div>
 
