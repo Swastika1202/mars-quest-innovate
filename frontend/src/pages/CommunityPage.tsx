@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
-import { Users, Lightbulb, Plus, Search } from 'lucide-react';
+import { Users, Lightbulb, Plus, Search, MessageCircle } from 'lucide-react';
 import { useApi } from '../hooks/useAxiosApi';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface Community {
   _id: string; // Changed from id to _id (MongoDB ObjectId)
@@ -30,6 +31,7 @@ const CommunityPage: React.FC = () => {
 
   const { userId, isLoggedIn } = useAuth();
   const api = useApi();
+  const navigate = useNavigate();
 
   const fetchCommunities = async () => {
     try {
@@ -223,12 +225,21 @@ const CommunityPage: React.FC = () => {
                   </div>
                   {isLoggedIn && (
                     isCommunityJoined(community._id) ? (
-                      <Button
-                        onClick={() => handleLeaveCommunity(community._id)}
-                        className="w-full bg-red-600 hover:bg-red-700 text-white"
-                      >
-                        Leave Community
-                      </Button>
+                      <>
+                        <Button
+                          onClick={() => handleLeaveCommunity(community._id)}
+                          className="w-full bg-red-600 hover:bg-red-700 text-white"
+                        >
+                          Leave Community
+                        </Button>
+                        <Button
+                          onClick={() => navigate(`/chat/${community._id}`)}
+                          className="w-full bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+                        >
+                          <MessageCircle className="h-4 w-4" />
+                          Chat with Community
+                        </Button>
+                      </>
                     ) : (
                       <Button
                         onClick={() => handleJoinCommunity(community._id)}
