@@ -19,6 +19,7 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import ProfilePage from "./pages/ProfilePage";
 import CommunityPage from "./pages/CommunityPage"; // Import CommunityPage
+import ChatPage from "./pages/ChatPage"; // Import ChatPage
 import SolutionDetails from "./pages/SolutionDetails"; // Import SolutionDetails page
 import NasaKnowledge from "./pages/NasaKnowledge"; // Import NasaKnowledge page
 import SubmitSolutionPage from "./pages/SubmitSolutionPage";
@@ -70,6 +71,7 @@ const App = () => {
                     <Route path="/learn-about-mars" element={<LearningPage />} />
                     <Route path="/profile" element={<ProfilePage />} /> {/* New route for ProfilePage */}
                     <Route path="/community" element={<CommunityPage />} /> {/* New route for CommunityPage */}
+                    <Route path="/chat/:communityId" element={<ChatPage />} /> {/* New route for ChatPage */}
                     <Route path="/solution/:id" element={<SolutionDetails />} /> {/* Route for SolutionDetails */}
                     <Route path="/submit-solution" element={<SubmitSolutionPage />} /> {/* New route for SubmitSolutionPage */}
                     <Route path="/nasa-knowledge" element={<NasaKnowledge />} /> {/* New route for NasaKnowledge */}
